@@ -1,0 +1,23 @@
+# Normalização de fim de linha (Windows/Linux)
+* text=auto eol=lf
+
+# Linguagens para diff
+*.php diff=php
+*.blade.php diff=html
+*.css diff=css
+*.js diff=javascript
+*.json diff=json
+*.md diff=markdown
+
+# Binários
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.webp binary
+*.ico binary
+*.woff binary
+*.woff2 binary
+*.ttf binary
+*.zip binary
+*.phar binary

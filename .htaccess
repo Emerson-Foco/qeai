@@ -1,0 +1,54 @@
+# Compatible with shared Apache/LiteSpeed hosting: no PHP or Options overrides.
+DirectoryIndex index.php
+
+<IfModule mod_rewrite.c>
+RewriteEngine On
+
+# Preserva o cabeçalho Authorization para a API (comum em CGI/FastCGI).
+RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
+
+# Redirect old public PHP URLs only when they were requested by the browser.
+# THE_REQUEST prevents loops after a clean URL is internally routed to PHP.
+RewriteCond %{THE_REQUEST} \s/+(.*/)?index\.php(?:[?\x20]) [NC]
+RewriteRule ^(?:.*/)?index\.php$ /%1 [R=301,L,NE]
+RewriteCond %{THE_REQUEST} \s/+(.*/)?privacy\.php(?:[?\x20]) [NC]
+RewriteRule ^privacy\.php$ /%1privacidade [R=301,L,NE]
+RewriteCond %{THE_REQUEST} \s/+(.*/)?cookies\.php(?:[?\x20]) [NC]
+RewriteRule ^cookies\.php$ /%1cookies [R=301,L,NE]
+RewriteCond %{THE_REQUEST} \s/+(.*/)?(privacidade|cookies)/(?:[?\x20]) [NC]
+RewriteRule ^(?:privacidade|cookies)/$ /%1%2 [R=301,L,NE]
+RewriteCond %{THE_REQUEST} \s/+(.*/)?blog\.php(?:[?\x20]) [NC]
+RewriteRule ^blog\.php$ /%1blog [R=301,L,NE]
+RewriteCond %{THE_REQUEST} \s/+(.*/)?blog/(?:[?\x20]) [NC]
+RewriteRule ^blog/$ /%1blog [R=301,L,NE]
+RewriteCond %{THE_REQUEST} \s/+(.*/)?sitemap\.php(?:[?\x20]) [NC]
+RewriteRule ^sitemap\.php$ /%1sitemap.xml [R=301,L,NE]
+RewriteCond %{THE_REQUEST} \s/+(.*/)?feed\.php(?:[?\x20]) [NC]
+RewriteRule ^feed\.php$ /%1feed [R=301,L,NE]
+
+RewriteRule ^(?:app|config|storage|private-docs|tests|dist)(?:/|$) - [F,L,NC]
+RewriteRule ^assets/(?:css|js|img)?/?$ - [F,L,NC]
+
+# Friendly public routes. PHP filenames remain implementation details.
+RewriteRule ^privacidade$ privacy.php [END,NC]
+RewriteRule ^cookies$ cookies.php [END,NC]
+RewriteRule ^contato$ contact.php [END,NC]
+RewriteRule ^blog$ blog.php [END,NC]
+RewriteRule ^blog/api(/.*)?$ blog_api.php [END,NC,QSA]
+RewriteRule ^blog/categoria/([a-z0-9][a-z0-9-]*)$ blog.php?category=$1 [END,NC,QSA]
+RewriteRule ^blog/tag/([a-z0-9][a-z0-9-]*)$ blog.php?tag=$1 [END,NC,QSA]
+RewriteRule ^blog/([a-z0-9][a-z0-9-]*)$ blog.php?slug=$1 [END,NC,QSA]
+RewriteRule ^feed$ feed.php [END,NC]
+RewriteRule ^sitemap\.xml$ sitemap.php [END,NC]
+</IfModule>
+
+<FilesMatch "(^\.|^README\.txt$|\.(?:md|json|key|lock|log|ini|env|dist|tmp|bak|zip|ps1)$)">
+    Require all denied
+</FilesMatch>
+
+<IfModule mod_headers.c>
+Header always set X-Content-Type-Options "nosniff"
+Header always set X-Frame-Options "SAMEORIGIN"
+Header always set Referrer-Policy "strict-origin-when-cross-origin"
+Header always set Permissions-Policy "camera=(), microphone=(), geolocation=()"
+</IfModule>

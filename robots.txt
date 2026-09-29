@@ -1,0 +1,10 @@
+User-agent: *
+Allow: /
+Disallow: /workspace/
+Disallow: /app/
+Disallow: /config/
+Disallow: /storage/
+Disallow: /private-docs/
+Disallow: /blog/api/
+
+Sitemap: https://qeai.com.br/sitemap.xml

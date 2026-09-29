@@ -1,0 +1,18 @@
+# Credenciais e configuração local (nunca versionar)
+/config/app.key
+/config/bootstrap.key
+/config/db.php
+
+# Dados e cache em tempo de execução (preserva storage/.htaccess)
+/storage/*
+!/storage/.htaccess
+
+# Mídia do blog no driver local (produção usa S3)
+/media/
+
+# Pacotes gerados
+/dist/
+
+# Sistema
+Thumbs.db
+.DS_Store

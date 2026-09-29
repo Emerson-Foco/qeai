@@ -1,0 +1,96 @@
+/* Blog da QEAI — reaproveita as variáveis e o estilo base de site.css */
+
+.blog-wrap { padding:56px 0 90px; }
+.blog-head { max-width:760px; margin:12px 0 40px; }
+.blog-head h1 { font-size:clamp(2.2rem,4vw,3.4rem); line-height:1.12; letter-spacing:-.05em; margin:16px 0; color:var(--dark); }
+.blog-head-desc { color:var(--muted); font-size:1rem; max-width:620px; margin:0; }
+
+/* Trilha de navegação */
+.breadcrumbs { font-size:.76rem; color:var(--muted); margin-bottom:10px; }
+.breadcrumbs ol { display:flex; flex-wrap:wrap; gap:8px; list-style:none; margin:0; padding:0; }
+.breadcrumbs li { display:flex; gap:8px; align-items:center; }
+.breadcrumbs li:not(:last-child)::after { content:'/'; color:#c9c4d6; }
+.breadcrumbs a:hover { color:var(--primary); }
+
+/* Grade de posts */
+.post-grid { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:26px; }
+.post-card { display:flex; flex-direction:column; border:1px solid var(--border); border-radius:20px; background:#fff; overflow:hidden; transition:box-shadow .2s,border-color .2s,transform .2s; }
+.post-card:hover { box-shadow:var(--shadow); border-color:#cfc4ec; transform:translateY(-2px); }
+.post-card-media { display:block; aspect-ratio:16/9; background:linear-gradient(150deg,#f0ebff,#f6faff); overflow:hidden; }
+.post-card-media img { width:100%; height:100%; object-fit:cover; }
+.post-card-body { padding:24px; display:flex; flex-direction:column; gap:12px; flex:1; }
+.post-category { font-size:.68rem; font-weight:750; text-transform:uppercase; letter-spacing:.1em; color:var(--primary); }
+.post-category:hover { color:color-mix(in srgb,var(--primary) 80%,black); }
+.post-card-title { font-size:1.2rem; line-height:1.3; letter-spacing:-.025em; margin:0; }
+.post-card-title a:hover { color:var(--primary); }
+.post-card-excerpt { color:var(--muted); font-size:.88rem; margin:0; flex:1; }
+.post-meta { display:flex; align-items:center; gap:9px; flex-wrap:wrap; color:#837e92; font-size:.72rem; }
+.post-meta a:hover { color:var(--primary); }
+
+/* Paginação */
+.pagination { display:flex; align-items:center; justify-content:space-between; gap:16px; margin-top:46px; padding-top:26px; border-top:1px solid var(--border); }
+.pagination-link { font-size:.84rem; font-weight:600; padding:10px 16px; border:1px solid var(--border); border-radius:10px; }
+.pagination-link:hover { border-color:var(--primary); color:var(--primary); }
+.pagination-link.is-disabled { color:#c2becd; border-color:var(--border); }
+.pagination-status { font-size:.78rem; color:var(--muted); }
+
+/* Estado vazio / 404 */
+.empty-state { padding:60px 24px; text-align:center; border:1px dashed var(--border); border-radius:20px; background:var(--soft); }
+.empty-state h1 { font-size:clamp(1.8rem,3vw,2.4rem); letter-spacing:-.04em; }
+.empty-state p { color:var(--muted); max-width:460px; margin:0 auto 22px; }
+
+/* Post individual */
+.post { max-width:780px; margin:0 auto; }
+.post-header { margin-bottom:26px; }
+.post-header h1 { font-size:clamp(2.1rem,4vw,3.2rem); line-height:1.13; letter-spacing:-.05em; color:var(--dark); margin:14px 0 16px; }
+.post-lead { color:var(--muted); font-size:1.05rem; line-height:1.75; margin:0 0 18px; }
+.post-cover { margin:30px 0; border-radius:20px; overflow:hidden; border:1px solid var(--border); }
+.post-cover img { width:100%; height:auto; }
+
+/* Tipografia do conteúdo Markdown */
+.post-body { font-size:1.05rem; line-height:1.85; color:#33354b; }
+.post-body > *:first-child { margin-top:0; }
+.post-body h2 { font-size:1.6rem; letter-spacing:-.03em; margin:40px 0 14px; color:var(--dark); }
+.post-body h3 { font-size:1.25rem; letter-spacing:-.02em; margin:32px 0 12px; color:var(--dark); }
+.post-body p { margin:0 0 20px; }
+.post-body a { color:var(--primary); text-decoration:underline; text-underline-offset:3px; }
+.post-body ul,.post-body ol { margin:0 0 22px; padding-left:22px; }
+.post-body li { margin:8px 0; }
+.post-body ul li::marker { color:var(--primary); }
+.post-body blockquote { margin:26px 0; padding:16px 24px; border-left:3px solid var(--primary); background:var(--soft); border-radius:0 12px 12px 0; color:#4c4a5e; font-style:italic; }
+.post-body code { background:#f0ebfd; color:#4a2ea6; padding:2px 6px; border-radius:6px; font-size:.88em; }
+.post-body pre { background:var(--dark); color:#e9e6f5; padding:20px; border-radius:14px; overflow:auto; margin:0 0 24px; }
+.post-body pre code { background:none; color:inherit; padding:0; }
+.post-body img { border-radius:14px; }
+.post-body hr { border:0; border-top:1px solid var(--border); margin:34px 0; }
+.post-body table { border-collapse:collapse; width:100%; margin:0 0 24px; }
+.post-body th,.post-body td { border:1px solid var(--border); padding:10px 12px; text-align:left; }
+
+/* Tags e navegação entre posts */
+.post-tags { display:flex; flex-wrap:wrap; align-items:center; gap:10px; margin-top:36px; padding-top:24px; border-top:1px solid var(--border); font-size:.8rem; color:var(--muted); }
+.tag-pill { padding:6px 12px; border:1px solid var(--border); border-radius:999px; font-size:.76rem; }
+.tag-pill:hover { border-color:var(--primary); color:var(--primary); }
+.post-nav { display:grid; grid-template-columns:1fr 1fr; gap:18px; max-width:780px; margin:40px auto 0; }
+.post-nav-item { border:1px solid var(--border); border-radius:16px; padding:18px 20px; display:flex; flex-direction:column; gap:6px; }
+.post-nav-item:hover { border-color:var(--primary); }
+.post-nav-item small { color:var(--muted); font-size:.7rem; text-transform:uppercase; letter-spacing:.08em; }
+.post-nav-item strong { font-size:.95rem; line-height:1.4; }
+.post-nav-next { text-align:right; align-items:flex-end; }
+
+/* Chamada final */
+.post-cta { max-width:780px; margin:52px auto 0; padding:34px; border-radius:22px; background:var(--dark); color:#fff; display:flex; align-items:center; justify-content:space-between; gap:28px; flex-wrap:wrap; }
+.post-cta h2 { color:#fff; font-size:clamp(1.5rem,2.4vw,2rem); margin:10px 0 8px; letter-spacing:-.035em; }
+.post-cta p { color:#bab9cb; margin:0; font-size:.9rem; max-width:420px; }
+.post-cta .eyebrow { color:#b39bfd; }
+
+@media(max-width:900px) {
+  .post-grid { grid-template-columns:repeat(2,minmax(0,1fr)); }
+}
+@media(max-width:640px) {
+  .blog-wrap { padding:36px 0 64px; }
+  .post-grid { grid-template-columns:1fr; }
+  .post-nav { grid-template-columns:1fr; }
+  .post-nav-next { text-align:left; align-items:flex-start; }
+  .post-cta { padding:26px; }
+  .pagination { flex-direction:column; }
+}
