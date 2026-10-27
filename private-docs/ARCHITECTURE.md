@@ -84,4 +84,4 @@ Ao adicionar CRM, leads persistentes, campanhas ou múltiplos usuários, migrar 
 
 ## URLs públicas
 
-As rotas públicas são `/`, `/privacidade`, `/cookies` e `/contato`. O Apache/LiteSpeed encaminha internamente essas rotas para os arquivos PHP. Requisições antigas para arquivos `.php` recebem redirecionamento 301 para o endereço limpo, inclusive `/workspace/index.php` para `/workspace/`. As páginas públicas também publicam uma URL canônica sem extensão.
+As rotas públicas são `/`, `/termos`, `/privacidade`, `/cookies` e `/contato`. O Apache/LiteSpeed encaminha internamente essas rotas para os arquivos PHP. Requisições antigas para arquivos `.php` recebem redirecionamento 301 para o endereço limpo, inclusive `/workspace/index.php` para `/workspace/`. As páginas públicas também publicam uma URL canônica sem extensão.
