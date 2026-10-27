@@ -2,6 +2,9 @@
 
 > Documento de planejamento. **Nenhum código alterado ainda.**
 > Faz parte do site institucional (`qeai.com.br`), **separado** do Q One.
+>
+> **Documento histórico.** O `robots.txt` atual é gerado dinamicamente por
+> `robots.php` a partir da URL canônica; não há mais arquivo estático.
 
 Data: 28/09/2026
 

@@ -9,6 +9,7 @@ Landing page PHP para hospedagem compartilhada, sem banco de dados obrigatório.
 - `terms.php` / `privacy.php` / `cookies.php`: páginas legais.
 - `blog.php`: blog (rotas limpas `/blog`, `/blog/{slug}`, categoria e tag).
 - `sitemap.php` / `feed.php`: sitemap XML e RSS para SEO.
+- `robots.php`: gera `/robots.txt` com o sitemap da URL canônica atual.
 - `workspace/blog.php`: painel do blog (CRUD, revisões, lixeira, mídia, tokens de API, configurações) com editor visual e rascunho automático.
 - `workspace/users.php`: usuários e grupos de acesso (permissões configuráveis).
 - `app/auth.php`: autenticação por e-mail e autorização por permissões (papéis).
@@ -38,10 +39,10 @@ Q One aponta para a pasta `public/` do projeto Laravel.
 
 ## URL do Q One
 
-O site inclui um botão de acesso ao web app em `site.app_url` (padrão
-`https://one.qeai.com.br`). Ele aparece no header, no hero, na seção de produto e no
-rodapé. Para alterar, edite `storage/config.json` (ou o padrão em
-`app/config_store.php`).
+O site inclui um botão de acesso ao web app. A URL vem de `site.app_url` em
+`storage/config.json`; se estiver vazia, é derivada do host atual como
+`https://one.<dominio>`. Em localhost/IP o botão é omitido para não gerar link
+falso. Para definir manualmente, edite `storage/config.json`.
 
 ## Padrão visual
 

@@ -56,9 +56,7 @@ function blog_excerpt(array $post, int $limit = 180): string
 
 function blog_site_url(string $path = ''): string
 {
-    global $config;
-    $base = rtrim((string)($config['site']['url'] ?? 'https://qeai.com.br'), '/');
-    return $path === '' ? $base . '/' : $base . '/' . ltrim($path, '/');
+    return site_url($path);
 }
 
 function blog_post_url(array $post): string

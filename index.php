@@ -5,7 +5,7 @@ $feedback = $_SESSION['contact_feedback'] ?? [];
 unset($_SESSION['contact_feedback']);
 $values = $feedback['values'] ?? [];
 $errors = $feedback['errors'] ?? [];
-$appUrl = rtrim((string)($config['site']['app_url'] ?? ''), '/') ?: 'https://one.qeai.com.br';
+$appUrl = site_app_url();
 function field_attributes(string $name, array $errors): string {
     return isset($errors[$name]) ? ' aria-invalid="true" aria-describedby="' . e($name) . '-error"' : '';
 }
@@ -22,7 +22,7 @@ public_header($config, 'QEAI — Marketing com inteligência, pessoas e automaç
       <span class="eyebrow"><span class="eyebrow-dot" aria-hidden="true"></span> Estratégia humana. Potência artificial.</span>
       <h1>Mais presença.<br> Mais identidade.<br> <span class="gradient-text">Mais possibilidades.</span></h1>
       <p>Conectamos estratégia, conteúdo e inteligência artificial para colocar sua marca em movimento. Com criatividade, consistência e pessoas no comando.</p>
-      <div class="hero-actions"><a class="btn btn-primary" href="#contato">Vamos falar da sua marca <span aria-hidden="true">↗</span></a><a class="btn btn-hero-ghost" href="<?=e($appUrl)?>" target="_blank" rel="noopener noreferrer">Acessar Q One <span aria-hidden="true">↗</span></a><a class="text-link" href="#servicos">Conheça nossas soluções <span aria-hidden="true">↓</span></a></div>
+      <div class="hero-actions"><a class="btn btn-primary" href="#contato">Vamos falar da sua marca <span aria-hidden="true">↗</span></a><?php if ($appUrl !== ''): ?><a class="btn btn-hero-ghost" href="<?=e($appUrl)?>" target="_blank" rel="noopener noreferrer">Acessar Q One <span aria-hidden="true">↗</span></a><?php endif; ?><a class="text-link" href="#servicos">Conheça nossas soluções <span aria-hidden="true">↓</span></a></div>
       <div class="trust"><span>Criação com identidade</span><span>Automação com propósito</span></div>
     </div>
     <div class="hero-art">
@@ -67,7 +67,7 @@ public_header($config, 'QEAI — Marketing com inteligência, pessoas e automaç
           <li>Histórico completo de cada lead</li>
         </ul>
         <div class="product-actions">
-          <a class="btn btn-primary" href="<?=e($appUrl)?>" target="_blank" rel="noopener noreferrer">Acessar Q One <span aria-hidden="true">↗</span></a>
+          <?php if ($appUrl !== ''): ?><a class="btn btn-primary" href="<?=e($appUrl)?>" target="_blank" rel="noopener noreferrer">Acessar Q One <span aria-hidden="true">↗</span></a><?php endif; ?>
           <a class="text-link" href="#contato">Falar com especialista <span aria-hidden="true">→</span></a>
         </div>
       </div>

@@ -11,7 +11,7 @@ O repositório fica fora do `public_html` e o código é aplicado com
 `git --work-tree`, sem expor `.git`:
 
 ```bash
-export SITE_DOMAIN="qeai.com"
+export SITE_DOMAIN="qeai.com.br"
 export SITE_ROOT="$HOME/domains/$SITE_DOMAIN/public_html"
 export SITE_REPO="$HOME/repos/qeai-site"
 
@@ -68,7 +68,7 @@ As URLs antigas `/index.php`, `/terms.php`, `/privacy.php`, `/cookies.php` e `/w
 
 O painel usa o banco MySQL do site (o mesmo do blog). Crie `config/db.php` antes do primeiro acesso (veja "Configurar o blog").
 
-Abra `https://qeai.com/workspace/` (ou o domínio canônico configurado). Se ainda não existir usuário, informe a chave de `config/bootstrap.key` e crie o **ADM** com nome, **e-mail** e senha (mínimo de 10 caracteres). A chave de instalação não é usada no login normal.
+Abra `https://qeai.com.br/workspace/` (ou o domínio canônico configurado). Se ainda não existir usuário, informe a chave de `config/bootstrap.key` e crie o **ADM** com nome, **e-mail** e senha (mínimo de 10 caracteres). A chave de instalação não é usada no login normal.
 
 Depois de entrar, em **Usuários e grupos**, o ADM adiciona pessoas e define os **grupos de acesso** (ADM, Desenvolvedor, Escritor, Convidado), podendo personalizar as permissões de cada grupo. O padrão é **convidar por link** (a pessoa define a própria senha); também é possível definir uma senha provisória, que deve ser trocada no primeiro acesso.
 
@@ -99,7 +99,7 @@ O blog do site usa um banco MySQL próprio (separado do Q One).
    - Pelo phpMyAdmin (Importar) ou
    - Por SSH: `mysql -u USUARIO -p NOME_DO_BANCO < app/blog_install.sql`
 4. Confirme que `/blog`, `/blog/{slug}`, `/sitemap.xml` e `/feed` respondem.
-5. O `robots.txt` precisa apontar para o domínio canônico. Se o site for `qeai.com`, altere no repositório e faça commit; não edite apenas no servidor, pois o próximo deploy reverte o arquivo.
+5. O `robots.txt` é gerado dinamicamente por `robots.php` a partir de `site.url`. Não edite um arquivo estático: ajuste a URL canônica em `storage/config.json`.
 
 Observações:
 

@@ -44,6 +44,7 @@ RewriteRule ^blog/tag/([a-z0-9][a-z0-9-]*)$ blog.php?tag=$1 [END,NC,QSA]
 RewriteRule ^blog/([a-z0-9][a-z0-9-]*)$ blog.php?slug=$1 [END,NC,QSA]
 RewriteRule ^feed$ feed.php [END,NC]
 RewriteRule ^sitemap\.xml$ sitemap.php [END,NC]
+RewriteRule ^robots\.txt$ robots.php [END,NC]
 </IfModule>
 
 <FilesMatch "(^\.|^README\.txt$|\.(?:md|json|key|lock|log|ini|env|dist|tmp|bak|zip|ps1)$)">

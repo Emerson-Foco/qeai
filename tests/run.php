@@ -62,7 +62,7 @@ try {
     $_SESSION = ['csrf' => str_repeat('a', 64)];
     check(!verify_csrf(['invalid']) && verify_csrf(str_repeat('a', 64)), 'CSRF rejects malformed arrays safely');
     check(rate_limit('unit', 2, 900) && rate_limit('unit', 2, 900) && !rate_limit('unit', 2, 900), 'rate limit blocks requests over quota');
-    foreach (['app', 'assets', 'workspace', 'index.php', 'contact.php', 'privacy.php', 'cookies.php', 'terms.php'] as $file) copy_tree($source . '/' . $file, ROOT_PATH . '/' . $file);
+    foreach (['app', 'assets', 'workspace', 'index.php', 'contact.php', 'privacy.php', 'cookies.php', 'terms.php', 'robots.php'] as $file) copy_tree($source . '/' . $file, ROOT_PATH . '/' . $file);
 
     // Banco de teste dedicado (painel: usuários/grupos; blog).
     $testDbName = 'qeai_suite_test_' . bin2hex(random_bytes(4));
@@ -93,7 +93,9 @@ try {
     }
     $home = request('/');
     check($home['status'] === 200 && str_contains($home['body'], 'Fale sobre seu projeto') && str_contains($home['body'], 'CNPJ 60.357.082/0001-58'), 'home loads with PHP sessions and footer CNPJ');
-    check(!preg_match('/(?:href|action)="[^\"]+\.php/', $home['body']) && str_contains($home['body'], 'action="contato"') && str_contains($home['body'], 'rel="canonical" href="https://qeai.com.br/"'), 'public navigation, form and canonical use clean URLs');
+    check(!preg_match('/(?:href|action)="[^\"]+\.php/', $home['body']) && str_contains($home['body'], 'action="contato"') && str_contains($home['body'], 'rel="canonical" href="' . $base . '/"'), 'public navigation, form and canonical use clean URLs');
+    $robots = request('/robots.php');
+    check($robots['status'] === 200 && str_contains($robots['body'], 'Sitemap: ' . $base . '/sitemap.xml'), 'robots.txt is generated from the current host');
     check(request('/privacy.php')['status'] === 200 && request('/cookies.php')['status'] === 200, 'legal pages load');
     $terms = request('/terms.php');
     check($terms['status'] === 200 && str_contains($terms['body'], 'Termos de Uso') && str_contains($terms['body'], 'responsáveis pelos dados'), 'terms page loads with data responsibility');

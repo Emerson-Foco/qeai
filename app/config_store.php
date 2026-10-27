@@ -7,8 +7,10 @@ function default_config(): array
     return [
         'site' => [
             'name' => 'QEAI',
-            'url' => 'https://qeai.com.br',
-            'app_url' => 'https://one.qeai.com.br',
+            // Vazio = deriva do host da requisição. O domínio canônico pode
+            // ser definido em storage/config.json sem alterar código.
+            'url' => '',
+            'app_url' => '',
             'contact_email' => 'contato@qeai.com.br',
             'cnpj' => '60357082000158',
         ],

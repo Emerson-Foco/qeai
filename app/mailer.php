@@ -59,7 +59,7 @@ function smtp_send(array $config, string $to, string $subject, string $html, str
     stream_set_timeout($socket, 15);
     try {
         smtp_read($socket, [220]);
-        $ehlo = $_SERVER['SERVER_NAME'] ?? 'qeai.com.br';
+        $ehlo = $_SERVER['SERVER_NAME'] ?? 'localhost';
         smtp_cmd($socket, 'EHLO ' . preg_replace('/[^A-Za-z0-9.\-]/', '', $ehlo), [250]);
         if ($enc === 'tls') {
             smtp_cmd($socket, 'STARTTLS', [220]);

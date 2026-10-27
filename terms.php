@@ -1,7 +1,7 @@
 <?php
 require __DIR__ . '/app/bootstrap.php';
 require_once ROOT_PATH . '/app/public_parts.php';
-public_header($config, 'Termos de Uso — Q One', ['canonical' => rtrim((string)$config['site']['url'], '/') . '/termos']);
+public_header($config, 'Termos de Uso — Q One', ['canonical' => site_url('termos')]);
 ?>
 <main id="conteudo" class="container legal">
   <span class="eyebrow">Termos</span>

@@ -29,13 +29,13 @@ function public_header(array $config, string $title, array $options = []): void
         'terms.php' => '/termos',
         default => '/',
     };
-    $canonicalUrl = $options['canonical'] ?? (rtrim((string)$config['site']['url'], '/') . $canonicalPath);
+    $canonicalUrl = $options['canonical'] ?? site_url($canonicalPath);
     $description = $options['description'] ?? 'Estratégia, conteúdo e inteligência artificial para colocar sua marca em movimento. Conheça a QEAI e vamos conversar sobre seu negócio.';
     $ogType = $options['og_type'] ?? 'website';
     $robots = $options['robots'] ?? 'index,follow';
     $bodyClass = $options['body_class'] ?? '';
     $home = url('');
-    $appUrl = rtrim((string)($config['site']['app_url'] ?? ''), '/') ?: 'https://one.qeai.com.br';
+    $appUrl = site_app_url();
 ?>
 <!doctype html>
 <html lang="pt-BR">
@@ -68,7 +68,7 @@ function public_header(array $config, string $title, array $options = []): void
 <nav class="nav" aria-label="Navegação principal"><div class="container nav-inner">
   <a class="brand" href="<?=e($home)?>" aria-label="QEAI — início"><img src="<?=url('assets/img/logo.svg')?>" alt="QEAI" width="128" height="48"></a>
   <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="nav-links" data-nav-toggle>Menu <span aria-hidden="true">☰</span></button>
-  <div class="nav-links" id="nav-links"><a href="<?=e($home)?>#servicos">O que fazemos</a><a href="<?=e(url('blog'))?>">Blog</a><a href="<?=e($home)?>#como-funciona">Como funciona</a><a href="<?=e($home)?>#contato">Contato</a><a class="btn btn-qeai" href="<?=e($appUrl)?>" target="_blank" rel="noopener noreferrer">Q One <span aria-hidden="true">↗</span></a><a class="btn btn-primary" href="<?=e($home)?>#contato">Vamos conversar <span aria-hidden="true">↗</span></a></div>
+  <div class="nav-links" id="nav-links"><a href="<?=e($home)?>#servicos">O que fazemos</a><a href="<?=e(url('blog'))?>">Blog</a><a href="<?=e($home)?>#como-funciona">Como funciona</a><a href="<?=e($home)?>#contato">Contato</a><?php if ($appUrl !== ''): ?><a class="btn btn-qeai" href="<?=e($appUrl)?>" target="_blank" rel="noopener noreferrer">Q One <span aria-hidden="true">↗</span></a><?php endif; ?><a class="btn btn-primary" href="<?=e($home)?>#contato">Vamos conversar <span aria-hidden="true">↗</span></a></div>
 </div></nav>
 <?php
 }
@@ -94,9 +94,9 @@ function public_footer(array $config): void
 {
     $cnpj = normalize_cnpj((string)($config['site']['cnpj'] ?? ''));
     $home = url('');
-    $appUrl = rtrim((string)($config['site']['app_url'] ?? ''), '/') ?: 'https://one.qeai.com.br';
+    $appUrl = site_app_url();
 ?>
-<footer class="footer"><div class="container footer-inner"><div class="footer-brand"><a href="<?=e($home)?>" aria-label="QEAI — início"><img src="<?=url('assets/img/logo.svg')?>" alt="QEAI" width="110" height="42" loading="lazy"></a><small>© <?=date('Y')?> QEAI. Marketing, pessoas e tecnologia.</small><?php if ($cnpj !== ''): ?><small>CNPJ <?=e(format_cnpj($cnpj))?></small><?php endif; ?></div><div class="footer-links"><a class="footer-app" href="<?=e($appUrl)?>" target="_blank" rel="noopener noreferrer">Q One ↗</a><a href="<?=e(url('termos'))?>">Termos</a><a href="<?=e(url('blog'))?>">Blog</a><a href="<?=e(url('privacidade'))?>">Privacidade</a><a href="<?=e(url('cookies'))?>">Cookies</a><a href="<?=e(url('cookies'))?>" data-cookie-settings>Preferências de cookies</a></div></div></footer>
+<footer class="footer"><div class="container footer-inner"><div class="footer-brand"><a href="<?=e($home)?>" aria-label="QEAI — início"><img src="<?=url('assets/img/logo.svg')?>" alt="QEAI" width="110" height="42" loading="lazy"></a><small>© <?=date('Y')?> QEAI. Marketing, pessoas e tecnologia.</small><?php if ($cnpj !== ''): ?><small>CNPJ <?=e(format_cnpj($cnpj))?></small><?php endif; ?></div><div class="footer-links"><?php if ($appUrl !== ''): ?><a class="footer-app" href="<?=e($appUrl)?>" target="_blank" rel="noopener noreferrer">Q One ↗</a><?php endif; ?><a href="<?=e(url('termos'))?>">Termos</a><a href="<?=e(url('blog'))?>">Blog</a><a href="<?=e(url('privacidade'))?>">Privacidade</a><a href="<?=e(url('cookies'))?>">Cookies</a><a href="<?=e(url('cookies'))?>" data-cookie-settings>Preferências de cookies</a></div></div></footer>
 <?php
     if (!empty($config['features']['whatsapp'])) {
         $number = preg_replace('/\D+/', '', $config['whatsapp']['number'] ?? '');

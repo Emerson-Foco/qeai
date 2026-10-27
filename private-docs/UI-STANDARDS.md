@@ -17,6 +17,8 @@ institucional e no Q One. **Leia antes de alterar layout, componentes ou fluxos.
 - Não introduzir Node, Vite, Tailwind ou frameworks de UI sem decisão explícita.
 - Ícones do Q One: componente Blade `<x-icon name="..." />`.
 - Ícones do site: SVGs inline ou caracteres tipográficos já usados no projeto.
+- URLs nunca devem ser fixadas no código. No site, use `site_url()`/`url()` e
+  `site.app_url`; no Q One, use `route()`, `url()` e `SITE_URL`/`APP_URL`.
 
 ---
 

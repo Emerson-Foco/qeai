@@ -18,9 +18,7 @@ unset($_SESSION['new_user_password'], $_SESSION['new_user_password_email'], $_SE
 
 function workspace_invite_url(string $token): string
 {
-    $https = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') || (($_SERVER['HTTP_X_FORWARDED_PROTO'] ?? '') === 'https');
-    $host = (string)($_SERVER['HTTP_HOST'] ?? 'qeai.com.br');
-    return ($https ? 'https' : 'http') . '://' . $host . base_path() . '/workspace/?token=' . $token;
+    return site_url('workspace/?token=' . rawurlencode($token));
 }
 
 function users_flash(string $message, string $url = 'users.php', string $type = 'ok'): void

@@ -5,12 +5,11 @@ em hospedagem compartilhada Hostinger, usando **Git + SSH**, com deploy keys
 somente leitura.
 
 > **Domínios usados neste guia**
-> - Site: `qeai.com`
+> - Site: `qeai.com.br`
 > - Q One: `one.qeai.com.br`
 >
-> Se o domínio canônico do site for `qeai.com.br`, troque `SITE_DOMAIN`,
-> `site.url`, `robots.txt` e as URLs legais do Q One. O restante do processo é
-> idêntico.
+> O site deriva as URLs do host quando `site.url` está vazio. O domínio
+> canônico pode ser gravado em `storage/config.json` sem alterar código.
 
 ---
 
@@ -18,7 +17,7 @@ somente leitura.
 
 | Aplicação | Repositório | Branch | Document root |
 |---|---|---|---|
-| Site QEAI | `github.com/Emerson-Foco/qeai` | `main` | `~/domains/qeai.com/public_html` |
+| Site QEAI | `github.com/Emerson-Foco/qeai` | `main` | `~/domains/qeai.com.br/public_html` |
 | Q One | `github.com/Emerson-Foco/QEAI-One` | `main` | `~/domains/one.qeai.com.br/qone/public` |
 
 - O site é PHP puro; **não tem build** (sem Node/Vite).
@@ -28,7 +27,7 @@ somente leitura.
 - Arquivos de configuração e runtime **nunca** entram no Git.
 
 ```
-~/domains/qeai.com/public_html/          arquivos públicos do site (sem .git)
+~/domains/qeai.com.br/public_html/          arquivos públicos do site (sem .git)
 ~/repos/qeai-site/.git                   repositório do site
 ~/domains/one.qeai.com.br/qone/          projeto Q One (.env, vendor, storage)
 ~/domains/one.qeai.com.br/qone/public/   docroot do Q One
@@ -49,7 +48,7 @@ somente leitura.
 
 No hPanel da Hostinger:
 
-- [ ] Domínio `qeai.com` apontando para a Hostinger.
+- [ ] Domínio `qeai.com.br` apontando para a Hostinger.
 - [ ] Subdomínio `one.qeai.com.br` criado.
 - [ ] SSL ativo nos dois domínios.
 - [ ] PHP 8.3 (mínimo 8.2) com `mbstring`, `openssl`, `pdo_mysql`, `tokenizer`,
@@ -80,7 +79,7 @@ which php
 No Windows PowerShell:
 
 ```powershell
-ssh-keygen -t ed25519 -C "seu-email@qeai.com"
+ssh-keygen -t ed25519 -C "seu-email@qeai.com.br"
 Get-Content $env:USERPROFILE\.ssh\id_ed25519.pub | Set-Clipboard
 ssh -T git@github.com
 ```
@@ -164,14 +163,14 @@ ls ~/domains
 mkdir -p ~/backups && chmod 700 ~/backups
 
 git config --global user.name "Deploy Hostinger"
-git config --global user.email "deploy@qeai.com"
+git config --global user.email "deploy@qeai.com.br"
 git config --global pull.ff only
 ```
 
 Defina as variáveis da sessão:
 
 ```bash
-export SITE_DOMAIN="qeai.com"
+export SITE_DOMAIN="qeai.com.br"
 export APP_DOMAIN="one.qeai.com.br"
 
 export SITE_ROOT="$HOME/domains/$SITE_DOMAIN/public_html"
@@ -180,8 +179,8 @@ export SITE_REPO="$HOME/repos/qeai-site"
 export APP_ROOT="$HOME/domains/$APP_DOMAIN/qone"
 ```
 
-> Se o domínio do site for `qeai.com.br`, use
-> `export SITE_DOMAIN="qeai.com.br"` e ajuste as URLs legais no `.env` do Q One.
+> O site usa `qeai.com.br`; as URLs internas são derivadas do host ou de
+> `storage/config.json`.
 
 ---
 
@@ -255,30 +254,20 @@ cd "$SITE_ROOT"
 php -r '
 $f = "storage/config.json";
 $c = is_file($f) ? json_decode(file_get_contents($f), true) : [];
-$c["site"]["url"] = "https://qeai.com";
+$c["site"]["url"] = "https://qeai.com.br";
 file_put_contents($f, json_encode($c, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES));
 '
 
 chmod 600 storage/config.json
 ```
 
-Se o domínio for `qeai.com.br`, troque a URL.
-
-Ajuste o `robots.txt` **no repositório local**, não apenas no servidor:
-
-```bash
-# no seu computador
-sed -i 's#https://qeai.com.br/sitemap.xml#https://qeai.com/sitemap.xml#' robots.txt
-git commit -am "Ajusta domínio canônico do sitemap"
-git push
-```
-
-Depois aplique a atualização no servidor (seção 9). Isso evita que o
-`robots.txt` volte ao valor antigo no próximo `git reset --hard`.
+O `robots.txt` é gerado dinamicamente por `robots.php` a partir de `site.url`.
+Não edite `robots.txt` no servidor nem no repositório: ele não é mais um arquivo
+estático. O sitemap também usa a URL canônica configurada.
 
 ### 5.6 Primeiro acesso ao painel do site
 
-1. Abra `https://qeai.com/workspace/`.
+1. Abra `https://qeai.com.br/workspace/`.
 2. Informe a chave lida de `config/bootstrap.key`:
 
    ```bash
@@ -294,8 +283,8 @@ Depois aplique a atualização no servidor (seção 9). Isso evita que o
 No hPanel, ative **Forçar HTTPS** para o domínio. Confirme:
 
 ```bash
-curl -I http://qeai.com
-curl -I https://qeai.com
+curl -I http://qeai.com.br
+curl -I https://qeai.com.br
 ```
 
 O primeiro deve redirecionar para HTTPS. O `.htaccess` do site já envia HSTS em
@@ -418,7 +407,7 @@ No painel Root:
 2. Salve e use **Verificação de entrega**.
 3. Ative **2FA** no ADM Root.
 4. Aceite os Termos de Uso no primeiro acesso.
-5. Confirme `LEGAL_TERMS_URL` e `LEGAL_PRIVACY_URL` apontando para o site.
+5. Confirme `SITE_URL` apontando para o site (os links legais são derivados dele).
 
 Sem SMTP configurado, convites e redefinições de senha não são enviados.
 
@@ -462,13 +451,14 @@ QUEUE_CONNECTION=sync
 FILESYSTEM_DISK=local
 
 MAIL_MAILER=log
-MAIL_FROM_ADDRESS="nao-responda@qeai.com"
+MAIL_FROM_ADDRESS="nao-responda@qeai.com.br"
 MAIL_FROM_NAME="Q One"
 
 QEAI_MODULES=dashboard,leads,crm_fields,settings,logs
 
-LEGAL_TERMS_URL=https://qeai.com/termos
-LEGAL_PRIVACY_URL=https://qeai.com/privacidade
+SITE_URL=https://qeai.com.br
+LEGAL_TERMS_URL=
+LEGAL_PRIVACY_URL=
 LEGAL_REQUIRE_ACCEPTANCE=true
 ```
 
@@ -479,7 +469,9 @@ Observações:
 - `QUEUE_CONNECTION=sync` evita jobs pendentes sem worker na hospedagem
   compartilhada.
 - `SESSION_ENCRYPT=true` criptografa o conteúdo da sessão no banco.
-- Se o site for `qeai.com.br`, troque as duas URLs legais e o remetente.
+- `SITE_URL` é a base dos links de Termos e Privacidade. Se quiser URLs
+  diferentes, preencha `LEGAL_TERMS_URL` e `LEGAL_PRIVACY_URL`.
+- Ajuste o remetente conforme o domínio de e-mail.
 
 ---
 
@@ -746,6 +738,7 @@ Para desenvolvimento:
 APP_ENV=local
 APP_DEBUG=true
 APP_URL=http://127.0.0.1:8000
+SITE_URL=http://localhost/qeai
 MAIL_MAILER=log
 LEGAL_REQUIRE_ACCEPTANCE=false
 ```
@@ -784,7 +777,7 @@ para a máquina de desenvolvimento.
 
 ## 13. Checklist pós-deploy
 
-- [ ] `https://qeai.com` abre com SSL válido.
+- [ ] `https://qeai.com.br` abre com SSL válido.
 - [ ] `/termos`, `/privacidade`, `/cookies`, `/blog` e `/sitemap.xml` abrem.
 - [ ] Botão **Q One** abre `https://one.qeai.com.br`.
 - [ ] `https://one.qeai.com.br/login` abre com SSL.
@@ -811,7 +804,7 @@ para a máquina de desenvolvimento.
 ### 500 no site
 
 ```bash
-curl -I https://qeai.com
+curl -I https://qeai.com.br
 tail -n 80 ~/logs/*error* 2>/dev/null
 ```
 
@@ -883,10 +876,10 @@ git config --global --add safe.directory "$APP_ROOT"
 - `SESSION_SECURE_COOKIE=true` somente com HTTPS.
 - `APP_URL` correto.
 
-### `robots.txt` volta ao valor antigo
+### `robots.txt` com o domínio errado
 
-Ele é versionado. Altere no repositório e faça commit; não edite apenas no
-servidor.
+O arquivo é gerado por `robots.php` a partir de `site.url`. Corrija
+`storage/config.json` e limpe o cache; não crie um `robots.txt` estático.
 
 ### Site aponta para o domínio errado
 
@@ -897,7 +890,7 @@ cd "$SITE_ROOT"
 php -r '
 $f = "storage/config.json";
 $c = json_decode(file_get_contents($f), true);
-$c["site"]["url"] = "https://qeai.com";
+$c["site"]["url"] = "https://qeai.com.br";
 file_put_contents($f, json_encode($c, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES));
 '
 ```
