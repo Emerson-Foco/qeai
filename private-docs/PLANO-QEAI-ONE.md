@@ -1,4 +1,4 @@
-# QEAI One — Plano da plataforma (análise e planejamento)
+# Q One — Plano da plataforma (análise e planejamento)
 
 > Documento de planejamento. **Nenhum código foi alterado.** Este arquivo é o registro das
 > decisões, do escopo e — principalmente — das **limitações da hospedagem compartilhada** que
@@ -12,13 +12,13 @@ Data: 28/09/2026
 
 | Tema | Decisão |
 |---|---|
-| Nome da plataforma | **QEAI One** |
+| Nome da plataforma | **Q One** |
 | Domínio | `one.qeai.com.br` (subdomínio independente do site institucional) |
 | Instalação | **Do zero** (instalação limpa; produção atual é apenas uma página e pode ser substituída) |
 | Infraestrutura | **Hostinger compartilhada** (sem VPS). Rodar no que o plano PHP permitir |
 | Limitações de infra | Devem ser registradas como observação no projeto, com requisitos para migração futura a VPS |
 | Público | **Somente B2B** (empresas/CNPJ) no lançamento |
-| Mercado | **Brasil no MVP**, mas arquitetura preparada para internacionalização |
+| Mercado | **Brasil inicialmente**, mas arquitetura preparada para internacionalização |
 | 1º canal de atendimento | **E-mail + chat no site** |
 | Canais futuros | WhatsApp e formulários/anúncios via API — **credenciais são do cliente** (a plataforma oferece a integração, mas a key, o número e as contas pertencem à organização) |
 | Cobrança | **Asaas** (Pix + cartão + boleto, recorrência) — integração **adiada**; no início só o plano **free** |
@@ -28,12 +28,12 @@ Data: 28/09/2026
 | E-mail das organizações | SMTP próprio de cada organização (canal de conversa com leads); outros provedores depois |
 | Governança de logs | Logs da **organização** separados dos logs da **plataforma** (ADM Root: abuso/segurança). O Root só acessa dados de organização como membro autorizado |
 | White label | Empresa, razão social, CNPJ, marca e cores configuráveis; padrão oficial QEAI: CNPJ 60.357.082/0001-58 |
-| GitHub | Conta **Emerson-Foco**; repositório novo para o QEAI One |
+| GitHub | Conta **Emerson-Foco**; repositório novo para o Q One |
 | Site institucional | Permanece separado, em `qeai.com.br`, sem risco pela plataforma |
 
 ---
 
-## 2. O que é o QEAI One
+## 2. O que é o Q One
 
 Não é "só um CRM". É uma **plataforma de operação de marketing e atendimento**, composta por
 módulos independentes que se encaixam. O CRM/leads é o núcleo, mas o valor está no conjunto:
@@ -45,7 +45,7 @@ módulos independentes que se encaixam. O CRM/leads é o núcleo, mas o valor es
 - Publicação em redes sociais e gestão de anúncios
 - Relatórios
 
-Posicionamento (analogia Agilize): a Agilize é "contabilidade digital"; o **QEAI One é a
+Posicionamento (analogia Agilize): a Agilize é "contabilidade digital"; o **Q One é a
 operação de marketing e atendimento da empresa**, operável pelo próprio cliente — e operável
 pela QEAI quando o cliente não quiser fazer (ver "modo agência", seção 6).
 
@@ -70,7 +70,7 @@ tem suas próprias tabelas, rotas, permissões e telas, e **não chama outro mó
   - i18n (catálogo de mensagens), locale, fuso horário, moeda e formatos de data.
   - Documento de identificação **plugável** (CPF/CNPJ agora; VAT/outros depois).
   - **Provedor de pagamento plugável** (Asaas/Mercado Pago no Brasil; Stripe no exterior).
-  - Cadastro com **allowlist de país** (Brasil no MVP).
+  - Cadastro com **allowlist de país** (Brasil inicialmente).
   - Expansão futura exige: GDPR (se mirar UE), termos por jurisdição, transferência
     internacional de dados, impostos e residência de dados.
 
@@ -83,7 +83,7 @@ tem suas próprias tabelas, rotas, permissões e telas, e **não chama outro mó
 | Domínio | Papel |
 |---|---|
 | `qeai.com.br` | Site institucional (mantém-se como está) |
-| `one.qeai.com.br` | **Plataforma QEAI One** |
+| `one.qeai.com.br` | **Plataforma Q One** |
 | `homolog.qeai.com.br` | Homologação/staging (recomendado) |
 | `api.qeai.com.br` ou `hooks.qeai.com.br` | Webhooks e API pública de captação (opcional; pode começar em `one.qeai.com.br/api`) |
 
@@ -118,21 +118,21 @@ modules/
   **localmente** e versionados (o servidor compartilhado não deve rodar build de Node).
 - Fila: driver `database` + cron `schedule:run` a cada minuto.
 - Cache e sessão: driver `database` (não há Redis).
-- Arquivos: disco local no MVP; depois Cloudflare R2 / S3 (Flysystem) sem mudar o domínio da aplicação.
+- Arquivos: disco local na primeira etapa; depois Cloudflare R2 / S3 (Flysystem) sem mudar o domínio da aplicação.
 - E-mail transacional: **provedor externo** (Resend, Amazon SES, SendGrid ou Postmark) — o SMTP
   da hospedagem (10/min e 100/dia) não atende a plataforma.
 
-> **Alternativa considerada e descartada no MVP:** PHP puro com kernel próprio. Dá controle
+> **Alternativa considerada e descartada na primeira etapa:** PHP puro com kernel próprio. Dá controle
 > total e deploy ZIP, mas exigiria reimplementar auth, RBAC, filas, migrations, cobrança e
 > multi-tenancy — mais esforço e mais risco de segurança. Reavaliar somente se houver
 > impedimento técnico para usar Composer/Laravel no plano contratado.
 
 ### 4.4 Publicação (Git, SSH e staging)
 
-- **SSH disponível no plano atual**: o deploy do QEAI One pode rodar `git pull`,
+- **SSH disponível no plano atual**: o deploy do Q One pode rodar `git pull`,
   `composer install`, `php artisan migrate` e `npm run build` direto no servidor — sem instalador
   web improvisado.
-- Repositório **separado** para o QEAI One (não misturar com o site institucional).
+- Repositório **separado** para o Q One (não misturar com o site institucional).
 - `homolog.qeai.com.br` com banco separado antes de produção.
 - Cron do agendador: `php /home/uXXXXXX/qeai-one/artisan schedule:run` a cada minuto; a fila usa
   o driver `database` e é processada pelo agendador.
@@ -193,13 +193,13 @@ obrigatórios (vazamento entre organizações é o pior cenário jurídico).
 | Fase | Entrega | Marco |
 |---|---|---|
 | **0. Fundação** | Subdomínio, repositório, banco, migrations, tenancy, auth, RBAC, convites, auditoria, feature flags, planos, storage, e-mail transacional, documentos legais (Termos, Privacidade, Cookies, DPA, subprocessadores) | Base segura para receber usuários |
-| **1. MVP operacional** | Leads/CRM + Inbox (e-mail + chat no site) + formulários embutidos + **API pública de captação** + notificações + gating por plano + onboarding + cobrança | **Aceitar usuários reais e receber leads** |
+| **1. Opera��o principal** | Leads/CRM + Inbox (e-mail + chat no site) + formulários embutidos + **API pública de captação** + notificações + gating por plano + onboarding + cobrança | **Aceitar usuários reais e receber leads** |
 | **2. Chatbot + WhatsApp** | Construtor de fluxo (sem IA) → base de conhecimento + IA opcional → WhatsApp Cloud API (credenciais do cliente) → transbordo humano | Atendimento automatizado |
 | **3. Social + Ads** | Publicação nas redes (APIs oficiais) + relatórios/gestão de anúncios + webhooks de anúncios | Fecha o ciclo de marketing |
 | **4. Canais extras + agência** | SMS, voz, modo agência multi-cliente, analytics avançado, app mobile | Escala |
 | **5. Endurecimento** | Pentest, RIPD/DPIA, plano de incidentes, otimização, migração de escala (VPS) | Pronto para crescer |
 
-**MVP = Fase 1.** Os módulos de chatbot/WhatsApp/social/anúncios vêm depois justamente porque
+**A opera��o principal = Fase 1.** Os módulos de chatbot/WhatsApp/social/anúncios vêm depois justamente porque
 são independentes e dependem de aprovações/credenciais externas (Meta, provedores), que são da
 organização cliente.
 
@@ -264,7 +264,7 @@ Além de Termos de Uso e Política de Privacidade/Cookies (reaproveitáveis do s
 > Esta seção é o registro pedido: o que o sistema exige hoje no compartilhado e o que fica
 > pendente para quando houver VPS. Os números variam conforme o plano da Hostinger.
 
-| Capacidade | Compartilhada (agora) | Contorno no MVP | VPS (melhoria futura) |
+| Capacidade | Compartilhada (agora) | Contorno na primeira etapa | VPS (melhoria futura) |
 |---|---|---|---|
 | WebSocket / tempo real | Indisponível nativo | Polling (5–15 s) ou SSE; Pusher/Ably externo se necessário | Servidor WebSocket nativo (Reverb) |
 | Worker de fila contínuo | Não há | Fila em banco + cron 1/min | Redis + Horizon + Supervisor |
@@ -287,7 +287,7 @@ recursos por cliente.
 
 ## 11. Riscos e itens em aberto
 
-1. **Escala no compartilhado** — funciona no MVP; webhooks + filas + concorrência pedem VPS.
+1. **Escala no compartilhado** — funciona na primeira etapa; webhooks + filas + concorrência pedem VPS.
 2. **E-mail transacional** — trocar desde o começo (limite de 100/dia inviabiliza a plataforma).
 3. **WhatsApp/Meta** — aprovação de app e custo por mensagem; por isso os canais são por organização.
 4. **Vazamento entre tenants** — exige testes dedicados de isolamento.
@@ -314,7 +314,7 @@ recursos por cliente.
 
 1. Subdomínio `one.qeai.com.br` criado + SSL (feito); criar o link simbólico do docroot
    `public_html/one` para `qeai-one/public` e ajustar o PHP para 8.3.
-2. Criar repositório GitHub do QEAI One, instalar Composer local, esqueleto Laravel + MySQL e
+2. Criar repositório GitHub do Q One, instalar Composer local, esqueleto Laravel + MySQL e
    criar `public_html/.gitignore` com `/one` (repositório do site).
 3. Definir banco, migrations e o kernel: tenancy, auth, RBAC, convites, auditoria, feature flags.
 4. Criar `homolog.qeai.com.br` com banco separado e deploy via Git.

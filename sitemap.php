@@ -23,6 +23,7 @@ $staticPages = [
     ['loc' => blog_site_url(''), 'lastmod' => date('Y-m-d'), 'priority' => '1.0'],
     ['loc' => blog_site_url('blog'), 'lastmod' => date('Y-m-d'), 'priority' => '0.9'],
     ['loc' => blog_site_url('privacidade'), 'lastmod' => date('Y-m-d'), 'priority' => '0.3'],
+    ['loc' => blog_site_url('termos'), 'lastmod' => date('Y-m-d'), 'priority' => '0.3'],
     ['loc' => blog_site_url('cookies'), 'lastmod' => date('Y-m-d'), 'priority' => '0.3'],
 ];
 foreach ($staticPages as $page) $urls[] = $page;

@@ -1,7 +1,7 @@
 # QEAI — Padrão de Interface e Código
 
 Documento de referência para desenvolvedores e agentes de IA que atuam no site
-institucional e no QEAI One. **Leia antes de alterar layout, componentes ou fluxos.**
+institucional e no Q One. **Leia antes de alterar layout, componentes ou fluxos.**
 
 ---
 
@@ -11,9 +11,9 @@ institucional e no QEAI One. **Leia antes de alterar layout, componentes ou flux
   dependências de CDN. Adicionar Bootstrap criaria conflito de estilos, peso extra
   e inconsistência entre site e produto.
 - Site institucional: PHP + HTML + CSS + JavaScript puro.
-- QEAI One: Laravel + Blade + CSS + JavaScript puro.
+- Q One: Laravel + Blade + CSS + JavaScript puro.
 - Não introduzir Node, Vite, Tailwind ou frameworks de UI sem decisão explícita.
-- Ícones do QEAI One: componente Blade `<x-icon name="..." />`.
+- Ícones do Q One: componente Blade `<x-icon name="..." />`.
 - Ícones do site: SVGs inline ou caracteres tipográficos já usados no projeto.
 
 ---
@@ -56,10 +56,10 @@ institucional e no QEAI One. **Leia antes de alterar layout, componentes ou flux
 - **Hero premium:** fundo navy com gradientes radiais, grid sutil, orbes desfocados
   e movimento lento (24s+). Texto branco com destaque em gradiente.
 - **Seções claras:** fundo branco ou `--soft`, muito espaço em branco, títulos fortes.
-- **Produto QEAI One:** bloco escuro em gradiente, com uma janela de produto clara
+- **Produto Q One:** bloco escuro em gradiente, com uma janela de produto clara
   e KPIs/barras. É o ponto de conversão para o web app.
 - **Cards:** borda fina, hover com elevação discreta e ícone em quadrado colorido.
-- **Rodapé:** limpo, com links institucionais e acesso ao QEAI One.
+- **Rodapé:** limpo, com links institucionais e acesso ao Q One.
 
 ---
 
@@ -69,15 +69,15 @@ institucional e no QEAI One. **Leia antes de alterar layout, componentes ou flux
 
 - Primário: fundo `--primary`, texto branco, seta quando ação de avanço.
 - Secundário/ghost: fundo translúcido ou branco, borda fina.
-- `QEAI One`: botão de contorno no header, com seta externa.
+- `Q One`: botão de contorno no header, com seta externa.
 - Altura mínima de toque: 44px.
-- Sempre verbo + objeto (“Acessar QEAI One”, “Vamos conversar”).
+- Sempre verbo + objeto (“Acessar Q One”, “Vamos conversar”).
 
 ### Navegação
 
 - Sticky, com fundo translúcido e blur.
 - Ao rolar, adicionar `.is-scrolled` (sombra suave).
-- No mobile, menu recolhido por botão; manter CTA do QEAI One visível.
+- No mobile, menu recolhido por botão; manter CTA do Q One visível.
 - Links internos usam âncoras; links externos usam `rel="noopener noreferrer"`.
 
 ### Hero
@@ -90,7 +90,7 @@ institucional e no QEAI One. **Leia antes de alterar layout, componentes ou flux
 
 - `.product-card` com copy à esquerda e mockup à direita.
 - O mockup é decorativo (`aria-hidden`), não substitui informação textual.
-- CTA principal leva ao QEAI One em nova aba.
+- CTA principal leva ao Q One em nova aba.
 
 ### Formulários
 
@@ -165,7 +165,7 @@ tests/               verificações internas (bloqueado na web)
 - Novos scripts: `site-premium.js` ou arquivo nomeado pelo recurso.
 - Nunca adicionar CSS/JS inline extenso em páginas.
 
-### QEAI One
+### Q One
 
 ```
 app/Http/Controllers     controllers por domínio

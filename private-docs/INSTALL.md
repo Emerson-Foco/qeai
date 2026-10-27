@@ -58,7 +58,7 @@ Salve e use **Enviar e-mail de teste**. O SMTP real precisa ser validado na hosp
 
 ## Configurar o blog
 
-O blog do site usa um banco MySQL próprio (separado do QEAI One).
+O blog do site usa um banco MySQL próprio (separado do Q One).
 
 1. No hPanel, crie um banco MySQL e um usuário com acesso total a ele. Anote host, nome, usuário e senha.
 2. Crie `config/db.php` no servidor usando `config/db.example.php` como modelo (host, porta, database, username, password). Mantenha fora do Git e com permissão restrita.

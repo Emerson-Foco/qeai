@@ -1,4 +1,4 @@
-# Fase 0 — QEAI One: fundação
+# Fase 0 — Q One: fundação
 
 > Documento de detalhamento da **Fase 0** (base da plataforma). Ainda **sem código**.
 > É o mapa que orienta a implementação: instalação, contas, organizações, papéis, auditoria,
@@ -11,7 +11,7 @@ Repositório previsto: `https://github.com/Emerson-Foco` (novo repositório, ex.
 
 ## 0. Objetivo da Fase 0
 
-Entregar a **fundação multi-tenant segura** do QEAI One, sem CRM ainda (isso é a Fase 1). Ao final
+Entregar a **fundação multi-tenant segura** do Q One, sem CRM ainda (isso é a Fase 1). Ao final
 da Fase 0 deve ser possível:
 
 - Instalar o sistema do zero, de forma guiada, criando o **ADM Root**.
@@ -138,7 +138,7 @@ Implementação: tabela única `settings` com `scope` (`platform`/`organization`
 - Resolução de feature/limite de uma organização: **override da organização > plano > padrão**.
 - Cobrança: **Asaas**, com uma **abstração de provedor de pagamento** (`payment_provider`) criada
   agora com um *stub*; a integração real entra quando você configurar as credenciais.
-- Nenhuma tela de cobrança obrigatória no MVP; assinaturas ficam no free até a integração.
+- Nenhuma tela de cobrança obrigatória na primeira etapa; assinaturas ficam no free até a integração.
 
 ---
 
@@ -196,7 +196,7 @@ Para que os módulos não fiquem acoplados:
 
 ---
 
-## 8. Telas do MVP
+## 8. Telas da opera��o principal
 
 **Instalação e acesso**
 - Assistente de instalação (8 etapas).
@@ -309,7 +309,7 @@ Homologação (`homolog.qeai.com.br`) com banco separado antes da produção.
 
 - Projeto Laravel **12.69.2** criado em `E:\Developer\Web\qeai-one` (fora do XAMPP), branch `main`, primeiro commit feito.
 - **Composer** instalado localmente em `E:\Developer\Tools\composer.phar` (executado com `php -d extension=zip composer.phar`).
-- Banco local **MySQL** `qeai_one` criado; `.env` aponta para MySQL, `APP_NAME="QEAI One"`, locale `pt_BR`, fuso `America/Sao_Paulo`. Migrações iniciais aplicadas.
+- Banco local **MySQL** `qeai_one` criado; `.env` aponta para MySQL, `APP_NAME="Q One"`, locale `pt_BR`, fuso `America/Sao_Paulo`. Migrações iniciais aplicadas.
 - Aplicação validada localmente (`php -S` em `public/`) com HTTP 200.
 - Frontend será **HTML/CSS/JS puro** (sem Vite/Node) — os assets ficam em `public/` e são referenciados diretamente nas views.
 - Pendente: criar o repositório no GitHub (`Emerson-Foco`) e adicionar o remote; e iniciar o núcleo da Fase 0 (instalador, auth, tenancy, RBAC, auditoria).
@@ -322,4 +322,4 @@ Homologação (`homolog.qeai.com.br`) com banco separado antes da produção.
 - **E-mail de entrada (IMAP/webhook):** definir na Fase 1.
 - **Tempo real no inbox:** polling no compartilhado; WebSocket em VPS futura.
 - **RIPD/DPIA, pentest e plano de incidentes:** Fase 5.
-- **Blog institucional:** permanece no repositório do site, sem impacto no QEAI One.
+- **Blog institucional:** permanece no repositório do site, sem impacto no Q One.

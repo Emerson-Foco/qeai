@@ -22,7 +22,7 @@ public_header($config, 'QEAI — Marketing com inteligência, pessoas e automaç
       <span class="eyebrow"><span class="eyebrow-dot" aria-hidden="true"></span> Estratégia humana. Potência artificial.</span>
       <h1>Mais presença.<br> Mais identidade.<br> <span class="gradient-text">Mais possibilidades.</span></h1>
       <p>Conectamos estratégia, conteúdo e inteligência artificial para colocar sua marca em movimento. Com criatividade, consistência e pessoas no comando.</p>
-      <div class="hero-actions"><a class="btn btn-primary" href="#contato">Vamos falar da sua marca <span aria-hidden="true">↗</span></a><a class="btn btn-hero-ghost" href="<?=e($appUrl)?>" target="_blank" rel="noopener noreferrer">Acessar QEAI One <span aria-hidden="true">↗</span></a><a class="text-link" href="#servicos">Conheça nossas soluções <span aria-hidden="true">↓</span></a></div>
+      <div class="hero-actions"><a class="btn btn-primary" href="#contato">Vamos falar da sua marca <span aria-hidden="true">↗</span></a><a class="btn btn-hero-ghost" href="<?=e($appUrl)?>" target="_blank" rel="noopener noreferrer">Acessar Q One <span aria-hidden="true">↗</span></a><a class="text-link" href="#servicos">Conheça nossas soluções <span aria-hidden="true">↓</span></a></div>
       <div class="trust"><span>Criação com identidade</span><span>Automação com propósito</span></div>
     </div>
     <div class="hero-art">
@@ -59,21 +59,21 @@ public_header($config, 'QEAI — Marketing com inteligência, pessoas e automaç
     <div class="product-card">
       <div class="product-copy">
         <span class="eyebrow">04 / Produto QEAI</span>
-        <h2>QEAI One.<br> Seu CRM, do seu jeito.</h2>
+        <h2>Q One.<br> Seu CRM, do seu jeito.</h2>
         <p>Centralize leads, personalize os campos do seu processo e acompanhe tudo em tabela, kanban, calendário ou cronograma. Uma operação simples, segura e feita para crescer com o seu negócio.</p>
         <ul class="product-list">
           <li>Campos personalizados com histórico completo</li>
           <li>Visões de tabela, kanban, calendário e cronograma</li>
-          <li>Permissões por equipe e auditoria de ações</li>
+          <li>Histórico completo de cada lead</li>
         </ul>
         <div class="product-actions">
-          <a class="btn btn-primary" href="<?=e($appUrl)?>" target="_blank" rel="noopener noreferrer">Acessar QEAI One <span aria-hidden="true">↗</span></a>
+          <a class="btn btn-primary" href="<?=e($appUrl)?>" target="_blank" rel="noopener noreferrer">Acessar Q One <span aria-hidden="true">↗</span></a>
           <a class="text-link" href="#contato">Falar com especialista <span aria-hidden="true">→</span></a>
         </div>
       </div>
       <div class="product-visual" aria-hidden="true">
         <div class="product-window">
-          <div class="product-window-bar"><i></i><i></i><i></i><span>QEAI One · CRM</span></div>
+          <div class="product-window-bar"><i></i><i></i><i></i><span>Q One · CRM</span></div>
           <div class="product-kpis">
             <div><small>Leads</small><strong>1.248</strong></div>
             <div><small>Oportunidades</small><strong>290</strong></div>

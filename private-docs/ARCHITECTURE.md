@@ -26,7 +26,7 @@ Landing page PHP para hospedagem compartilhada, sem banco de dados obrigatório.
 
 O blog usa um banco MySQL próprio (`config/db.php`, privado e fora do Git). O corpo dos posts é Markdown, renderizado com Parsedown (safe mode) e cacheado em `storage/blog-cache/`. As consultas usam PDO com prepared statements.
 
-## URL do QEAI One
+## URL do Q One
 
 O site inclui um botão de acesso ao web app em `site.app_url` (padrão
 `https://one.qeai.com.br`). Ele aparece no header, no hero, na seção de produto e no

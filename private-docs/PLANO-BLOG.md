@@ -1,7 +1,7 @@
 # Blog da QEAI — plano (landing page + blog + API para agente)
 
 > Documento de planejamento. **Nenhum código alterado ainda.**
-> Faz parte do site institucional (`qeai.com.br`), **separado** do QEAI One.
+> Faz parte do site institucional (`qeai.com.br`), **separado** do Q One.
 
 Data: 28/09/2026
 
@@ -85,7 +85,7 @@ Navegador/Agente ─────────────────────
 ## 5. Painel (B2) — no `/workspace/`
 
 Reaproveita o login, o CSRF e o rate limit já existentes. Continua sendo **um admin**
-(multiusuário e RBAC são responsabilidade do QEAI One, não do site).
+(multiusuário e RBAC são responsabilidade do Q One, não do site).
 
 - Lista de posts com filtros (status, categoria, tag, busca) e ações em lote.
 - Editor: título, slug (gerado do título, editável), resumo, **corpo em Markdown com

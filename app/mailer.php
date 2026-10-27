@@ -106,5 +106,5 @@ function send_contact_mail(array $config, array $data): void
 
 function send_test_mail(array $config): void
 {
-    smtp_send($config, $config['smtp']['to_email'], 'QEAI — teste de SMTP', '<p>Se você recebeu este e-mail, a configuração SMTP da QEAI está funcionando.</p>', 'Se você recebeu este e-mail, a configuração SMTP da QEAI está funcionando.');
+    smtp_send($config, $config['smtp']['to_email'], 'QEAI - verificação de SMTP', '<p>Se você recebeu este e-mail, a configuração SMTP da QEAI está funcionando.</p>', 'Se você recebeu este e-mail, a configuração SMTP da QEAI está funcionando.');
 }
