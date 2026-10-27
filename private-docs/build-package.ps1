@@ -1,4 +1,6 @@
 $ErrorActionPreference = 'Stop'
+Add-Type -AssemblyName System.IO.Compression
+Add-Type -AssemblyName System.IO.Compression.FileSystem
 $projectRoot = [IO.Path]::GetFullPath((Join-Path $PSScriptRoot '..'))
 $outputDirectory = Join-Path $projectRoot 'dist'
 [IO.Directory]::CreateDirectory($outputDirectory) | Out-Null
@@ -7,7 +9,7 @@ $entries = [Collections.Generic.List[string]]::new()
 foreach ($name in @('.htaccess','.user.ini','index.php','contact.php','privacy.php','cookies.php','blog.php','blog_api.php','sitemap.php','feed.php','robots.txt','config/.htaccess','storage/.htaccess')) { $entries.Add($name) }
 foreach ($directory in @('app','assets','workspace')) {
     Get-ChildItem -LiteralPath (Join-Path $projectRoot $directory) -File -Recurse -Force | ForEach-Object {
-        $entries.Add([IO.Path]::GetRelativePath($projectRoot, $_.FullName).Replace('\','/'))
+        $entries.Add($_.FullName.Substring($projectRoot.Length + 1).Replace('\','/'))
     }
 }
 $stream = [IO.File]::Open($zipPath, [IO.FileMode]::Create)

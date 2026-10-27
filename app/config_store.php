@@ -8,6 +8,7 @@ function default_config(): array
         'site' => [
             'name' => 'QEAI',
             'url' => 'https://qeai.com.br',
+            'app_url' => 'https://one.qeai.com.br',
             'contact_email' => 'contato@qeai.com.br',
             'cnpj' => '60357082000158',
         ],

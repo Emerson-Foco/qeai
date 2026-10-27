@@ -26,6 +26,19 @@ Landing page PHP para hospedagem compartilhada, sem banco de dados obrigatório.
 
 O blog usa um banco MySQL próprio (`config/db.php`, privado e fora do Git). O corpo dos posts é Markdown, renderizado com Parsedown (safe mode) e cacheado em `storage/blog-cache/`. As consultas usam PDO com prepared statements.
 
+## URL do QEAI One
+
+O site inclui um botão de acesso ao web app em `site.app_url` (padrão
+`https://one.qeai.com.br`). Ele aparece no header, no hero, na seção de produto e no
+rodapé. Para alterar, edite `storage/config.json` (ou o padrão em
+`app/config_store.php`).
+
+## Padrão visual
+
+A camada premium fica em `assets/css/site-premium.css` e `assets/js/site-premium.js`,
+carregada depois dos arquivos base. O padrão completo, componentes, animações e regras
+de segurança estão em `private-docs/UI-STANDARDS.md`.
+
 ## Segurança
 - Senha do painel com `password_hash()` e `password_verify()`.
 - Regeneração de ID de sessão após login.
@@ -67,7 +80,6 @@ Ao adicionar CRM, leads persistentes, campanhas ou múltiplos usuários, migrar 
 - SMTP exige TLS e não transforma falha de encerramento em falha de entrega após a aceitação da mensagem pelo servidor.
 - Preferências de cookies têm controle de foco e Escape. LocalStorage indisponível não impede o funcionamento da página. Não há pixels ou analytics instalados.
 - `.user.ini` desativa a exibição pública de erros e ativa logs. `.htaccess` não exige overrides de Options ou ServerSignature.
-- `tests/run.php`: 37 verificações isoladas de persistência, sessão, formulários, painel, usuários/grupos e permissões. Usa um banco de teste descartável e nenhum e-mail externo é enviado.
 - `private-docs/build-package.ps1`: gera o ZIP de atualização sem as chaves e a configuração do servidor.
 
 ## URLs públicas

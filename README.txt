@@ -9,7 +9,6 @@ as chaves em config/ nem a configuração operacional em storage/config.json.
 
 Prévia local: http://localhost/qeai/
 Painel local: http://localhost/qeai/workspace/
-Testes: C:/xampp/php/php.exe tests/run.php
 
 URLs públicas: /, /privacidade e /cookies. Os endereços antigos com .php são
 redirecionados permanentemente para as URLs limpas pelo arquivo .htaccess.

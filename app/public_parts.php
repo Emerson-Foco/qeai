@@ -34,6 +34,7 @@ function public_header(array $config, string $title, array $options = []): void
     $robots = $options['robots'] ?? 'index,follow';
     $bodyClass = $options['body_class'] ?? '';
     $home = url('');
+    $appUrl = rtrim((string)($config['site']['app_url'] ?? ''), '/') ?: 'https://one.qeai.com.br';
 ?>
 <!doctype html>
 <html lang="pt-BR">
@@ -54,6 +55,7 @@ function public_header(array $config, string $title, array $options = []): void
   <link rel="canonical" href="<?=e($canonicalUrl)?>">
   <link rel="icon" href="<?=url('assets/img/logo.svg')?>" type="image/svg+xml">
   <link rel="stylesheet" href="<?=asset_version('assets/css/site.css')?>">
+  <link rel="stylesheet" href="<?=asset_version('assets/css/site-premium.css')?>">
   <?php if (!empty($options['styles'])): foreach ($options['styles'] as $stylePath): ?>
   <link rel="stylesheet" href="<?=asset_version($stylePath)?>">
   <?php endforeach; endif; ?>
@@ -65,7 +67,7 @@ function public_header(array $config, string $title, array $options = []): void
 <nav class="nav" aria-label="Navegação principal"><div class="container nav-inner">
   <a class="brand" href="<?=e($home)?>" aria-label="QEAI — início"><img src="<?=url('assets/img/logo.svg')?>" alt="QEAI" width="128" height="48"></a>
   <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="nav-links" data-nav-toggle>Menu <span aria-hidden="true">☰</span></button>
-  <div class="nav-links" id="nav-links"><a href="<?=e($home)?>#servicos">O que fazemos</a><a href="<?=e(url('blog'))?>">Blog</a><a href="<?=e($home)?>#como-funciona">Como funciona</a><a href="<?=e($home)?>#contato">Contato</a><a class="btn btn-primary" href="<?=e($home)?>#contato">Vamos conversar <span aria-hidden="true">↗</span></a></div>
+  <div class="nav-links" id="nav-links"><a href="<?=e($home)?>#servicos">O que fazemos</a><a href="<?=e(url('blog'))?>">Blog</a><a href="<?=e($home)?>#como-funciona">Como funciona</a><a href="<?=e($home)?>#contato">Contato</a><a class="btn btn-qeai" href="<?=e($appUrl)?>" target="_blank" rel="noopener noreferrer">QEAI One <span aria-hidden="true">↗</span></a><a class="btn btn-primary" href="<?=e($home)?>#contato">Vamos conversar <span aria-hidden="true">↗</span></a></div>
 </div></nav>
 <?php
 }
@@ -91,8 +93,9 @@ function public_footer(array $config): void
 {
     $cnpj = normalize_cnpj((string)($config['site']['cnpj'] ?? ''));
     $home = url('');
+    $appUrl = rtrim((string)($config['site']['app_url'] ?? ''), '/') ?: 'https://one.qeai.com.br';
 ?>
-<footer class="footer"><div class="container footer-inner"><div class="footer-brand"><a href="<?=e($home)?>" aria-label="QEAI — início"><img src="<?=url('assets/img/logo.svg')?>" alt="QEAI" width="110" height="42" loading="lazy"></a><small>© <?=date('Y')?> QEAI. Marketing, pessoas e tecnologia.</small><?php if ($cnpj !== ''): ?><small>CNPJ <?=e(format_cnpj($cnpj))?></small><?php endif; ?></div><div class="footer-links"><a href="<?=e(url('blog'))?>">Blog</a><a href="<?=e(url('privacidade'))?>">Privacidade</a><a href="<?=e(url('cookies'))?>">Cookies</a><a href="<?=e(url('cookies'))?>" data-cookie-settings>Preferências de cookies</a></div></div></footer>
+<footer class="footer"><div class="container footer-inner"><div class="footer-brand"><a href="<?=e($home)?>" aria-label="QEAI — início"><img src="<?=url('assets/img/logo.svg')?>" alt="QEAI" width="110" height="42" loading="lazy"></a><small>© <?=date('Y')?> QEAI. Marketing, pessoas e tecnologia.</small><?php if ($cnpj !== ''): ?><small>CNPJ <?=e(format_cnpj($cnpj))?></small><?php endif; ?></div><div class="footer-links"><a class="footer-app" href="<?=e($appUrl)?>" target="_blank" rel="noopener noreferrer">QEAI One ↗</a><a href="<?=e(url('blog'))?>">Blog</a><a href="<?=e(url('privacidade'))?>">Privacidade</a><a href="<?=e(url('cookies'))?>">Cookies</a><a href="<?=e(url('cookies'))?>" data-cookie-settings>Preferências de cookies</a></div></div></footer>
 <?php
     if (!empty($config['features']['whatsapp'])) {
         $number = preg_replace('/\D+/', '', $config['whatsapp']['number'] ?? '');
@@ -101,5 +104,5 @@ function public_footer(array $config): void
         }
     }
     cookie_ui();
-    echo '<script src="' . asset_version('assets/js/site.js') . '" defer></script></body></html>';
+    echo '<script src="' . asset_version('assets/js/site.js') . '" defer></script><script src="' . asset_version('assets/js/site-premium.js') . '" defer></script></body></html>';
 }

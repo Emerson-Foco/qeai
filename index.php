@@ -5,6 +5,7 @@ $feedback = $_SESSION['contact_feedback'] ?? [];
 unset($_SESSION['contact_feedback']);
 $values = $feedback['values'] ?? [];
 $errors = $feedback['errors'] ?? [];
+$appUrl = rtrim((string)($config['site']['app_url'] ?? ''), '/') ?: 'https://one.qeai.com.br';
 function field_attributes(string $name, array $errors): string {
     return isset($errors[$name]) ? ' aria-invalid="true" aria-describedby="' . e($name) . '-error"' : '';
 }
@@ -15,12 +16,13 @@ public_header($config, 'QEAI — Marketing com inteligência, pessoas e automaç
 ?>
 <main id="conteudo">
 <header class="hero">
+  <div class="hero-bg" aria-hidden="true"><span class="hero-orb orb-one"></span><span class="hero-orb orb-two"></span><span class="hero-orb orb-three"></span></div>
   <div class="container hero-grid">
     <div>
       <span class="eyebrow"><span class="eyebrow-dot" aria-hidden="true"></span> Estratégia humana. Potência artificial.</span>
       <h1>Mais presença.<br> Mais identidade.<br> <span class="gradient-text">Mais possibilidades.</span></h1>
       <p>Conectamos estratégia, conteúdo e inteligência artificial para colocar sua marca em movimento. Com criatividade, consistência e pessoas no comando.</p>
-      <div class="hero-actions"><a class="btn btn-primary" href="#contato">Vamos falar da sua marca <span aria-hidden="true">↗</span></a><a class="text-link" href="#servicos">Conheça nossas soluções <span aria-hidden="true">↓</span></a></div>
+      <div class="hero-actions"><a class="btn btn-primary" href="#contato">Vamos falar da sua marca <span aria-hidden="true">↗</span></a><a class="btn btn-hero-ghost" href="<?=e($appUrl)?>" target="_blank" rel="noopener noreferrer">Acessar QEAI One <span aria-hidden="true">↗</span></a><a class="text-link" href="#servicos">Conheça nossas soluções <span aria-hidden="true">↓</span></a></div>
       <div class="trust"><span>Criação com identidade</span><span>Automação com propósito</span></div>
     </div>
     <div class="hero-art">
@@ -52,9 +54,41 @@ public_header($config, 'QEAI — Marketing com inteligência, pessoas e automaç
   </div>
 </section>
 <section class="section"><div class="container split"><div><span class="eyebrow">03 / Nossa essência</span><h2>Automatizar tarefas.<br> Preservar o que<br> torna você único.</h2><p class="muted">Acreditamos que a tecnologia deve ampliar a criatividade. Por isso, estratégia, intenção e bom senso orientam cada etapa do nosso trabalho.</p><a class="text-link" href="#contato">Vamos construir essa conexão <span aria-hidden="true">↗</span></a></div><div class="quote-card"><span class="quote-mark" aria-hidden="true">✳</span><strong>Pessoas + ideias + IA.<br> O resultado tem<br> a sua identidade.</strong><p>Ferramentas ajudam a produzir e organizar.<br> Pessoas dão significado e direção.</p><div class="pills"><span class="pill">Estratégia</span><span class="pill">Criatividade</span><span class="pill">Tecnologia</span></div></div></div></section>
+<section class="section product-section" id="qeai-one">
+  <div class="container">
+    <div class="product-card">
+      <div class="product-copy">
+        <span class="eyebrow">04 / Produto QEAI</span>
+        <h2>QEAI One.<br> Seu CRM, do seu jeito.</h2>
+        <p>Centralize leads, personalize os campos do seu processo e acompanhe tudo em tabela, kanban, calendário ou cronograma. Uma operação simples, segura e feita para crescer com o seu negócio.</p>
+        <ul class="product-list">
+          <li>Campos personalizados com histórico completo</li>
+          <li>Visões de tabela, kanban, calendário e cronograma</li>
+          <li>Permissões por equipe e auditoria de ações</li>
+        </ul>
+        <div class="product-actions">
+          <a class="btn btn-primary" href="<?=e($appUrl)?>" target="_blank" rel="noopener noreferrer">Acessar QEAI One <span aria-hidden="true">↗</span></a>
+          <a class="text-link" href="#contato">Falar com especialista <span aria-hidden="true">→</span></a>
+        </div>
+      </div>
+      <div class="product-visual" aria-hidden="true">
+        <div class="product-window">
+          <div class="product-window-bar"><i></i><i></i><i></i><span>QEAI One · CRM</span></div>
+          <div class="product-kpis">
+            <div><small>Leads</small><strong>1.248</strong></div>
+            <div><small>Oportunidades</small><strong>290</strong></div>
+            <div><small>Clientes</small><strong>128</strong></div>
+          </div>
+          <div class="product-bars"><i style="height:34%"></i><i style="height:52%"></i><i style="height:44%"></i><i style="height:68%"></i><i style="height:58%"></i><i style="height:82%"></i><i style="height:72%"></i><i style="height:94%"></i></div>
+          <div class="product-tags"><span>Novo lead recebido</span><span>Prioridade alta</span><span>Próximo contato hoje</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
 <section class="section contact-section" id="contato">
   <div class="container contact-wrap">
-    <div class="contact-intro"><span class="eyebrow">04 / Vamos conversar</span><h2>O próximo passo<br> da sua marca<br> começa aqui.</h2><p>Conte um pouco sobre seu negócio e o que você tem em mente. Vamos entender como podemos ajudar.</p><a class="contact-email" href="mailto:<?=e($config['site']['contact_email'])?>"><span class="icon" aria-hidden="true">↗</span><span><small>Prefere escrever diretamente?</small><strong><?=e($config['site']['contact_email'])?></strong></span></a><div class="contact-note"><span aria-hidden="true">✦</span><p>Uma boa conversa é o começo<br> de uma boa estratégia.</p></div></div>
+    <div class="contact-intro"><span class="eyebrow">05 / Vamos conversar</span><h2>O próximo passo<br> da sua marca<br> começa aqui.</h2><p>Conte um pouco sobre seu negócio e o que você tem em mente. Vamos entender como podemos ajudar.</p><a class="contact-email" href="mailto:<?=e($config['site']['contact_email'])?>"><span class="icon" aria-hidden="true">↗</span><span><small>Prefere escrever diretamente?</small><strong><?=e($config['site']['contact_email'])?></strong></span></a><div class="contact-note"><span aria-hidden="true">✦</span><p>Uma boa conversa é o começo<br> de uma boa estratégia.</p></div></div>
     <div class="contact-form-card">
       <h3>Fale sobre seu projeto</h3><p class="form-intro">Os campos com asterisco (*) são obrigatórios.</p>
       <?php if ($feedback): ?><div id="form-feedback" tabindex="-1" role="<?=($feedback['type'] ?? '') === 'ok' ? 'status' : 'alert'?>" class="status <?=($feedback['type'] ?? '') === 'ok' ? 'ok' : 'err'?>"><?=e($feedback['message'] ?? '')?></div><?php endif; ?>
