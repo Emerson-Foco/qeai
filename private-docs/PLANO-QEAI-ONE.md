@@ -3,6 +3,8 @@
 > Documento de planejamento. **Nenhum código foi alterado.** Este arquivo é o registro das
 > decisões, do escopo e — principalmente — das **limitações da hospedagem compartilhada** que
 > viram requisitos para uma futura migração para VPS.
+>
+> **Documento histórico.** O deploy vigente está em `private-docs/DEPLOY-GIT.md`.
 
 Data: 28/09/2026
 
@@ -193,13 +195,13 @@ obrigatórios (vazamento entre organizações é o pior cenário jurídico).
 | Fase | Entrega | Marco |
 |---|---|---|
 | **0. Fundação** | Subdomínio, repositório, banco, migrations, tenancy, auth, RBAC, convites, auditoria, feature flags, planos, storage, e-mail transacional, documentos legais (Termos, Privacidade, Cookies, DPA, subprocessadores) | Base segura para receber usuários |
-| **1. Opera��o principal** | Leads/CRM + Inbox (e-mail + chat no site) + formulários embutidos + **API pública de captação** + notificações + gating por plano + onboarding + cobrança | **Aceitar usuários reais e receber leads** |
+| **1. Opera��o principal** | Leads/CRM + Inbox (e-mail + chat no site) + formulários embutidos + **API pública de captação** + notificações + gating por plano + onboarding + cobrança | **Aceitar usuários reais e receber leads** |
 | **2. Chatbot + WhatsApp** | Construtor de fluxo (sem IA) → base de conhecimento + IA opcional → WhatsApp Cloud API (credenciais do cliente) → transbordo humano | Atendimento automatizado |
 | **3. Social + Ads** | Publicação nas redes (APIs oficiais) + relatórios/gestão de anúncios + webhooks de anúncios | Fecha o ciclo de marketing |
 | **4. Canais extras + agência** | SMS, voz, modo agência multi-cliente, analytics avançado, app mobile | Escala |
 | **5. Endurecimento** | Pentest, RIPD/DPIA, plano de incidentes, otimização, migração de escala (VPS) | Pronto para crescer |
 
-**A opera��o principal = Fase 1.** Os módulos de chatbot/WhatsApp/social/anúncios vêm depois justamente porque
+**A opera��o principal = Fase 1.** Os módulos de chatbot/WhatsApp/social/anúncios vêm depois justamente porque
 são independentes e dependem de aprovações/credenciais externas (Meta, provedores), que são da
 organização cliente.
 

@@ -1,7 +1,10 @@
 # Credenciais e configuração local (nunca versionar)
 /config/app.key
 /config/bootstrap.key
+/config/*.key
 /config/db.php
+/.env
+/.env.*
 
 # Dados e cache em tempo de execução (preserva storage/.htaccess)
 /storage/*
@@ -10,9 +13,17 @@
 # Mídia do blog no driver local (produção usa S3)
 /media/
 
-# Pacotes gerados
+# Pacotes, backups e artefatos locais
 /dist/
+/*.zip
+*.bak
+*.tmp
+*.log
+*.sqlite
+*.sqlite3
 
-# Sistema
+# Editores e sistema
 Thumbs.db
 .DS_Store
+/.idea/
+/.vscode/

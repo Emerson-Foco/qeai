@@ -3,6 +3,8 @@
 Documento de referência para desenvolvedores e agentes de IA que atuam no site
 institucional e no Q One. **Leia antes de alterar layout, componentes ou fluxos.**
 
+> Publicação e atualização: `private-docs/DEPLOY-GIT.md`.
+
 ---
 
 ## 1. Decisão de stack

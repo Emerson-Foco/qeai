@@ -1,14 +1,20 @@
-QEAI — site institucional
+QEAI - site institucional
 ========================
 
-Arquivos atualizados para PHP 8.1+ (Hostinger: PHP 8.3).
+PHP 8.2+ (Hostinger: PHP 8.3). O site não tem etapa de build.
 
-Leia private-docs/INSTALL.md antes de publicar.
-O pacote dist/qeai-hostinger-atualizacao.zip atualiza o código sem sobrescrever
-as chaves em config/ nem a configuração operacional em storage/config.json.
+Publicação oficial: Git + SSH na branch `main`.
+Guia completo: private-docs/DEPLOY-GIT.md
+Publicação/atualização e contingência: private-docs/INSTALL.md
+Arquitetura: private-docs/ARCHITECTURE.md
+Padrão visual e segurança: private-docs/UI-STANDARDS.md
 
 Prévia local: http://localhost/qeai/
 Painel local: http://localhost/qeai/workspace/
 
-URLs públicas: /, /termos, /privacidade e /cookies. Os endereços antigos com .php são
-redirecionados permanentemente para as URLs limpas pelo arquivo .htaccess.
+URLs públicas: /, /termos, /privacidade e /cookies. Os endereços antigos com .php
+são redirecionados permanentemente para as URLs limpas pelo arquivo .htaccess.
+
+Nunca versionar config/app.key, config/bootstrap.key, config/db.php,
+storage/config.json ou media/. O pacote dist/ é apenas contingência e não
+substitui o deploy via Git.

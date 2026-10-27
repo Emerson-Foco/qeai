@@ -1,10 +1,42 @@
 # Publicação e atualização na Hostinger
 
+> **Método oficial: Git + SSH na branch `main`.** O guia completo, com
+> deploy keys, docroot, atualizações, rollback e ambientes, está em
+> `private-docs/DEPLOY-GIT.md`. O ZIP descrito neste arquivo é contingência para
+> quando o SSH não estiver disponível.
+
+## Publicação via Git (recomendada)
+
+O repositório fica fora do `public_html` e o código é aplicado com
+`git --work-tree`, sem expor `.git`:
+
+```bash
+export SITE_DOMAIN="qeai.com"
+export SITE_ROOT="$HOME/domains/$SITE_DOMAIN/public_html"
+export SITE_REPO="$HOME/repos/qeai-site"
+
+mkdir -p "$HOME/repos" "$SITE_ROOT"
+git clone --no-checkout git@github-qeai-site:Emerson-Foco/qeai.git "$SITE_REPO"
+git -C "$SITE_REPO" --work-tree="$SITE_ROOT" checkout -f main
+```
+
+Preserve sempre `config/app.key`, `config/bootstrap.key`, `config/db.php`,
+`storage/config.json` e `media/`. Eles não são versionados.
+
+Atualização:
+
+```bash
+git -C "$SITE_REPO" fetch origin main
+git -C "$SITE_REPO" --work-tree="$SITE_ROOT" reset --hard origin/main
+```
+
+Não use `git clean -fdx`.
+
 ## O que foi verificado
 
 Em 14/09/2026, a consulta pública a https://qeai.com.br/ devolveu HTTP 500, corpo vazio e o cabeçalho `X-Powered-By: PHP/8.3.33`. A versão de PHP informada atende aos requisitos do projeto. Sem acesso ao log da hospedagem, não é possível atribuir uma causa definitiva ao erro.
 
-O projeto original abriu com HTTP 200 no Apache/PHP 8.2 local e passou na verificação de sintaxe. Foram aplicadas melhorias de compatibilidade, persistência e tratamento de erros. A resolução em produção deve ser confirmada após o upload e a consulta aos logs.
+O projeto original abriu com HTTP 200 no Apache/PHP 8.2 local e passou na verificação de sintaxe. Foram aplicadas melhorias de compatibilidade, persistência e tratamento de erros. A resolução em produção deve ser confirmada após o deploy e a consulta aos logs.
 
 ## Atualizar o site já enviado
 
@@ -16,7 +48,7 @@ O projeto original abriu com HTTP 200 no Apache/PHP 8.2 local e passou na verifi
 6. Mantenha PHP 8.3, extensão OpenSSL habilitada e HTTPS ativo. Deixe `log_errors` ligado e `display_errors` desligado. A Hostinger também permite consultar os registros pelo hPanel.
 7. As pastas `storage/`, `storage/rate-limit/` e `storage/sessions/` precisam permitir gravação pelo usuário PHP. O código cria as subpastas automaticamente. Use os padrões da hospedagem (em geral pastas 755, arquivos 644); não use 777. Se não houver gravação, confira o proprietário no hPanel/suporte.
 8. Se houver cache de página inteira/CDN ativo, exclua páginas PHP com sessão e formulário do cache. O código envia `Cache-Control: no-store`. Limpe o cache da Hostinger após a atualização.
-9. Abra a página inicial, `/privacidade`, `/cookies` e `/workspace/`. Confirme também que `/config/app.key` e `/storage/config.json` continuam bloqueados com HTTP 403.
+9. Abra a página inicial, `/termos`, `/privacidade`, `/cookies` e `/workspace/`. Confirme também que `/config/app.key` e `/storage/config.json` continuam bloqueados com HTTP 403.
 10. Remova o ZIP de dentro de `public_html` depois da extração.
 
 ## URLs públicas
@@ -24,18 +56,19 @@ O projeto original abriu com HTTP 200 no Apache/PHP 8.2 local e passou na verifi
 A navegação usa URLs sem extensão:
 
 - Página inicial: `/`
+- Termos de Uso do Q One: `/termos`
 - Política de privacidade: `/privacidade`
 - Política de cookies: `/cookies`
 - Recebimento do formulário: `/contato`
 - Painel: `/workspace/`
 
-As URLs antigas `/index.php`, `/privacy.php`, `/cookies.php` e `/workspace/index.php` respondem com redirecionamento permanente para os endereços limpos. Essa compatibilidade evita links quebrados e informa aos buscadores qual endereço deve ser indexado.
+As URLs antigas `/index.php`, `/terms.php`, `/privacy.php`, `/cookies.php` e `/workspace/index.php` respondem com redirecionamento permanente para os endereços limpos. Essa compatibilidade evita links quebrados e informa aos buscadores qual endereço deve ser indexado.
 
 ## Primeiro acesso ao painel
 
 O painel usa o banco MySQL do site (o mesmo do blog). Crie `config/db.php` antes do primeiro acesso (veja "Configurar o blog").
 
-Abra `https://qeai.com.br/workspace/`. Se ainda não existir usuário, informe a chave de `config/bootstrap.key` e crie o **ADM** com nome, **e-mail** e senha (mínimo de 10 caracteres). A chave de instalação não é usada no login normal.
+Abra `https://qeai.com/workspace/` (ou o domínio canônico configurado). Se ainda não existir usuário, informe a chave de `config/bootstrap.key` e crie o **ADM** com nome, **e-mail** e senha (mínimo de 10 caracteres). A chave de instalação não é usada no login normal.
 
 Depois de entrar, em **Usuários e grupos**, o ADM adiciona pessoas e define os **grupos de acesso** (ADM, Desenvolvedor, Escritor, Convidado), podendo personalizar as permissões de cada grupo. O padrão é **convidar por link** (a pessoa define a própria senha); também é possível definir uma senha provisória, que deve ser trocada no primeiro acesso.
 
@@ -54,7 +87,7 @@ No painel, informe os dados da caixa de e-mail:
 - Senha: senha dessa caixa de e-mail.
 - Destinatário: endereço que receberá as mensagens.
 
-Salve e use **Enviar e-mail de teste**. O SMTP real precisa ser validado na hospedagem: os testes locais não enviam mensagens para terceiros. Uma senha vazia ou incorreta impede o envio, mas não deve derrubar a página inicial.
+Salve e use **Enviar e-mail de verificação**. O SMTP real precisa ser validado na hospedagem: as verificações locais não enviam mensagens para terceiros. Uma senha vazia ou incorreta impede o envio, mas não deve derrubar a página inicial.
 
 ## Configurar o blog
 
@@ -66,7 +99,7 @@ O blog do site usa um banco MySQL próprio (separado do Q One).
    - Pelo phpMyAdmin (Importar) ou
    - Por SSH: `mysql -u USUARIO -p NOME_DO_BANCO < app/blog_install.sql`
 4. Confirme que `/blog`, `/blog/{slug}`, `/sitemap.xml` e `/feed` respondem.
-5. O `robots.txt` já aponta para `https://qeai.com.br/sitemap.xml`.
+5. O `robots.txt` precisa apontar para o domínio canônico. Se o site for `qeai.com`, altere no repositório e faça commit; não edite apenas no servidor, pois o próximo deploy reverte o arquivo.
 
 Observações:
 

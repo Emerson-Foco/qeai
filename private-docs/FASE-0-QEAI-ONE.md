@@ -3,6 +3,10 @@
 > Documento de detalhamento da **Fase 0** (base da plataforma). Ainda **sem código**.
 > É o mapa que orienta a implementação: instalação, contas, organizações, papéis, auditoria,
 > planos dinâmicos, configurações, deploy e segurança.
+>
+> **Documento histórico de planejamento.** O deploy vigente está em
+> `private-docs/DEPLOY-GIT.md`; os caminhos e o link simbólico citados abaixo são
+> referência da fase inicial e não devem ser usados como instrução atual.
 
 Data: 28/09/2026
 Repositório previsto: `https://github.com/Emerson-Foco` (novo repositório, ex.: `qeai-one`)
@@ -196,7 +200,7 @@ Para que os módulos não fiquem acoplados:
 
 ---
 
-## 8. Telas da opera��o principal
+## 8. Telas da opera��o principal
 
 **Instalação e acesso**
 - Assistente de instalação (8 etapas).

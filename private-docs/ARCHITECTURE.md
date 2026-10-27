@@ -6,7 +6,7 @@ Landing page PHP para hospedagem compartilhada, sem banco de dados obrigatório.
 ## Estrutura
 - `index.php`: landing page.
 - `contact.php`: recebimento e validação do formulário.
-- `privacy.php` / `cookies.php`: páginas legais.
+- `terms.php` / `privacy.php` / `cookies.php`: páginas legais.
 - `blog.php`: blog (rotas limpas `/blog`, `/blog/{slug}`, categoria e tag).
 - `sitemap.php` / `feed.php`: sitemap XML e RSS para SEO.
 - `workspace/blog.php`: painel do blog (CRUD, revisões, lixeira, mídia, tokens de API, configurações) com editor visual e rascunho automático.
@@ -25,6 +25,16 @@ Landing page PHP para hospedagem compartilhada, sem banco de dados obrigatório.
 `storage/config.json` é suficiente para o site institucional atual. A gravação é atômica e a senha SMTP é criptografada com AES-256-GCM usando `config/app.key`.
 
 O blog usa um banco MySQL próprio (`config/db.php`, privado e fora do Git). O corpo dos posts é Markdown, renderizado com Parsedown (safe mode) e cacheado em `storage/blog-cache/`. As consultas usam PDO com prepared statements.
+
+## Deploy
+
+O código é publicado por Git + SSH na branch `main`. O repositório fica fora de
+`public_html` e é aplicado com `git --work-tree`, sem expor `.git`. O docroot do
+Q One aponta para a pasta `public/` do projeto Laravel.
+
+- Guia completo: `private-docs/DEPLOY-GIT.md`.
+- Chaves, banco e configuração operacional ficam fora do Git.
+- Nunca usar `git clean -fdx` em produção.
 
 ## URL do Q One
 
