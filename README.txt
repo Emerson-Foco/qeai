@@ -4,6 +4,7 @@ QEAI - site institucional
 PHP 8.2+ (Hostinger: PHP 8.3). O site não tem etapa de build.
 
 Publicação oficial: Git + SSH na branch `main`.
+Fluxo padrão: private-docs/DEPLOY-PADRAO.md
 Guia completo: private-docs/DEPLOY-GIT.md
 Publicação/atualização e contingência: private-docs/INSTALL.md
 Arquitetura: private-docs/ARCHITECTURE.md

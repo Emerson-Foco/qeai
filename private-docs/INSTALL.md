@@ -1,7 +1,9 @@
 # Publicação e atualização na Hostinger
 
-> **Método oficial: Git + SSH na branch `main`.** O guia completo, com
-> deploy keys, docroot, atualizações, rollback e ambientes, está em
+> **Fluxo oficial:** `private-docs/DEPLOY-PADRAO.md` — Git pull, banco no
+> hPanel, conexão pelo painel do site e criação do ADM. SSH só para deploy.
+>
+> O guia completo, com docroot, atualizações, rollback e ambientes, está em
 > `private-docs/DEPLOY-GIT.md`. O ZIP descrito neste arquivo é contingência para
 > quando o SSH não estiver disponível.
 

@@ -4,6 +4,7 @@ Leia antes de alterar o site:
 
 - `private-docs/UI-STANDARDS.md` — padrão visual, componentes, motion, segurança e organização.
 - `private-docs/ARCHITECTURE.md` — arquitetura, rotas e persistência.
+- `private-docs/DEPLOY-PADRAO.md` — fluxo oficial: Git, hPanel, painel e banco.
 - `private-docs/INSTALL.md` — publicação e atualização.
 - `private-docs/DEPLOY-GIT.md` — deploy via Git/SSH do site e do Q One, ambientes e rollback.
 
