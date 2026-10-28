@@ -9,6 +9,27 @@ $installed = auth_installed();
 $message = $_SESSION['panel_message'] ?? '';
 unset($_SESSION['panel_message']);
 $error = '';
+
+$dbConfigured = is_file(db_config_path());
+$dbReady = false;
+$dbError = '';
+if ($dbConfigured) {
+    try {
+        db()->query('SELECT 1');
+        $dbReady = true;
+    } catch (Throwable $exception) {
+        $dbError = 'O banco configurado não respondeu. Confira os dados abaixo ou reconfigure a conexão.';
+        error_log('[QEAI workspace db] ' . $exception->getMessage());
+    }
+}
+
+$dbForm = [
+    'host' => 'localhost',
+    'port' => '3306',
+    'database' => '',
+    'username' => '',
+];
+
 function panel_success(string $message): void
 {
     $_SESSION['panel_message'] = $message;
@@ -21,12 +42,111 @@ function workspace_base_url(): string
     return site_url('workspace');
 }
 
+/**
+ * Executa o schema do blog sem depender do cliente mysql no terminal.
+ * O arquivo é idempotente e não contém posts de exemplo.
+ */
+function workspace_import_blog_schema(PDO $pdo, string $file): void
+{
+    $sql = file_get_contents($file);
+    if ($sql === false) throw new RuntimeException('Arquivo de instalação do blog não encontrado.');
+
+    $sql = preg_replace('/^\s*--.*$/m', '', $sql) ?? $sql;
+    $statements = preg_split('/;\s*(?:\r?\n|$)/', $sql) ?: [];
+
+    foreach ($statements as $statement) {
+        $statement = trim($statement);
+        if ($statement === '') continue;
+        $pdo->exec($statement);
+    }
+}
+
+function workspace_write_db_config(array $config): void
+{
+    $content = "<?php\n\nreturn " . var_export($config, true) . ";\n";
+    $tmp = tempnam(ROOT_PATH . '/config', 'db-');
+    if ($tmp === false) throw new RuntimeException('Não foi possível gravar a configuração do banco.');
+
+    if (file_put_contents($tmp, $content, LOCK_EX) === false) {
+        @unlink($tmp);
+        throw new RuntimeException('Não foi possível gravar a configuração do banco.');
+    }
+
+    @chmod($tmp, 0600);
+    if (!@rename($tmp, db_config_path())) {
+        @unlink($tmp);
+        throw new RuntimeException('Não foi possível ativar a configuração do banco.');
+    }
+    @chmod(db_config_path(), 0600);
+}
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     try {
         $action = post_string('action');
         if (!verify_csrf($_POST['csrf'] ?? null)) throw new RuntimeException('Sua sessão expirou. Recarregue a página e tente novamente.');
 
-        if ($action === 'setup' && !$installed) {
+        if ($action === 'setup_db' && !$installed && !$dbReady) {
+            if (!rate_limit('workspace-db', 6, 900)) throw new RuntimeException('Muitas tentativas de conexão. Aguarde 15 minutos.');
+
+            $setupKey = trim((string)@file_get_contents(ROOT_PATH . '/config/bootstrap.key'));
+            if ($setupKey === '' || !hash_equals($setupKey, post_string('setup_key'))) {
+                throw new RuntimeException('Chave de instalação inválida ou ausente. Confira config/bootstrap.key.');
+            }
+
+            $dbForm = [
+                'host' => trim(post_string('db_host')),
+                'port' => trim(post_string('db_port')),
+                'database' => trim(post_string('db_name')),
+                'username' => trim(post_string('db_user')),
+            ];
+            $dbPassword = is_string($_POST['db_password'] ?? null) ? $_POST['db_password'] : '';
+
+            if ($dbForm['host'] === '' || strlen($dbForm['host']) > 253 || !preg_match('/^[A-Za-z0-9](?:[A-Za-z0-9.-]*[A-Za-z0-9])?$/', $dbForm['host'])) {
+                throw new RuntimeException('Informe um host válido, sem protocolo ou porta.');
+            }
+
+            $dbPort = filter_var($dbForm['port'], FILTER_VALIDATE_INT, ['options' => ['min_range' => 1, 'max_range' => 65535]]);
+            if (!$dbPort) throw new RuntimeException('Informe uma porta válida.');
+
+            if (!preg_match('/^[A-Za-z0-9_-]{1,64}$/', $dbForm['database'])) {
+                throw new RuntimeException('Informe um nome de banco válido.');
+            }
+            if (!preg_match('/^[A-Za-z0-9_-]{1,64}$/', $dbForm['username'])) {
+                throw new RuntimeException('Informe um usuário de banco válido.');
+            }
+            if (strlen($dbPassword) > 255) {
+                throw new RuntimeException('A senha do banco é muito longa.');
+            }
+
+            try {
+                $pdo = new PDO(
+                    sprintf('mysql:host=%s;port=%d;dbname=%s;charset=utf8mb4', $dbForm['host'], (int)$dbPort, $dbForm['database']),
+                    $dbForm['username'],
+                    $dbPassword,
+                    [
+                        PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
+                        PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
+                        PDO::ATTR_EMULATE_PREPARES => false,
+                    ]
+                );
+
+                workspace_import_blog_schema($pdo, ROOT_PATH . '/app/blog_install.sql');
+            } catch (PDOException $exception) {
+                error_log('[QEAI workspace db] ' . $exception->getMessage());
+                throw new RuntimeException('Não foi possível conectar ou importar o banco. Confira host, nome, usuário, senha e permissões.');
+            }
+
+            workspace_write_db_config([
+                'host' => $dbForm['host'],
+                'port' => (int)$dbPort,
+                'database' => $dbForm['database'],
+                'username' => $dbForm['username'],
+                'password' => $dbPassword,
+                'charset' => 'utf8mb4',
+            ]);
+
+            panel_success('Banco conectado e estrutura importada. Agora crie o ADM.');
+        } elseif ($action === 'setup' && !$installed && $dbReady) {
             if (!rate_limit('workspace-setup', 6, 900)) throw new RuntimeException('Muitas tentativas de instalação. Aguarde 15 minutos.');
             $setupKey = trim((string)@file_get_contents(ROOT_PATH . '/config/bootstrap.key'));
             if ($setupKey === '' || !hash_equals($setupKey, post_string('setup_key'))) throw new RuntimeException('Chave de instalação inválida ou ausente. Confira config/bootstrap.key.');
@@ -138,8 +258,26 @@ $canSettings = $currentUser && auth_can('site.settings');
 <main class="wrap">
 <?php if ($message): ?><div class="status ok" role="status"><?=e($message)?></div><?php endif; ?>
 <?php if ($error): ?><div class="status err" role="alert"><?=e($error)?></div><?php endif; ?>
-<?php if (!$installed): ?>
-<section class="box auth-box"><span class="eyebrow">Primeiro acesso</span><h1>Vamos preparar seu painel.</h1><p class="muted">Informe a chave do arquivo <code>config/bootstrap.key</code> e crie o ADM (acesso principal) com e-mail e senha.</p><form method="post" class="grid"><input type="hidden" name="csrf" value="<?=e(csrf_token())?>"><input type="hidden" name="action" value="setup"><label class="full">Chave de instalação<input name="setup_key" required autocomplete="off"></label><label>Nome<input name="name" value="ADM" maxlength="120"></label><label>E-mail<input type="email" name="email" required autocomplete="email" placeholder="voce@empresa.com.br"></label><label class="full">Senha<input type="password" name="password" minlength="10" maxlength="72" required autocomplete="new-password"><small>Use pelo menos 10 caracteres.</small></label><button class="btn full">Criar ADM</button></form></section>
+<?php if (!$installed && !$dbReady): ?>
+<section class="box auth-box">
+  <span class="eyebrow">Banco de dados</span>
+  <h1>Conecte o banco do site.</h1>
+  <p class="muted">Informe os dados do MySQL criado no hPanel. A estrutura do blog será importada automaticamente, sem posts de exemplo.</p>
+  <?php if ($dbError !== ''): ?><div class="status err" role="alert"><?=e($dbError)?></div><?php endif; ?>
+  <form method="post" class="grid" autocomplete="off">
+    <input type="hidden" name="csrf" value="<?=e(csrf_token())?>">
+    <input type="hidden" name="action" value="setup_db">
+    <label class="full">Chave de instalação<input name="setup_key" required autocomplete="off"><small>Está em <code>config/bootstrap.key</code>.</small></label>
+    <label>Host<input name="db_host" value="<?=e($dbForm['host'])?>" required maxlength="253" placeholder="localhost"></label>
+    <label>Porta<input name="db_port" value="<?=e($dbForm['port'])?>" required inputmode="numeric" maxlength="5" placeholder="3306"></label>
+    <label class="full">Nome do banco<input name="db_name" value="<?=e($dbForm['database'])?>" required maxlength="64" placeholder="u000000000_qeai"></label>
+    <label class="full">Usuário do banco<input name="db_user" value="<?=e($dbForm['username'])?>" required maxlength="64" placeholder="u000000000_qeai"></label>
+    <label class="full">Senha do banco<input type="password" name="db_password" maxlength="255" autocomplete="new-password"></label>
+    <button class="btn full">Conectar banco e importar estrutura</button>
+  </form>
+</section>
+<?php elseif (!$installed): ?>
+<section class="box auth-box"><span class="eyebrow">Primeiro acesso</span><h1>Vamos preparar seu painel.</h1><p class="muted">Banco conectado. Informe a chave do arquivo <code>config/bootstrap.key</code> e crie o ADM (acesso principal) com e-mail e senha.</p><form method="post" class="grid"><input type="hidden" name="csrf" value="<?=e(csrf_token())?>"><input type="hidden" name="action" value="setup"><label class="full">Chave de instalação<input name="setup_key" required autocomplete="off"></label><label>Nome<input name="name" value="ADM" maxlength="120"></label><label>E-mail<input type="email" name="email" required autocomplete="email" placeholder="voce@empresa.com.br"></label><label class="full">Senha<input type="password" name="password" minlength="10" maxlength="72" required autocomplete="new-password"><small>Use pelo menos 10 caracteres.</small></label><button class="btn full">Criar ADM</button></form></section>
 <?php elseif (!$currentUser): ?>
 <?php if (isset($_GET['token'])): $tokenEntry = auth_find_any_token((string)$_GET['token']); ?>
   <?php if ($tokenEntry === null): ?>

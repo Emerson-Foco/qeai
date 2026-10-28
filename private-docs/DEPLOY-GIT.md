@@ -208,21 +208,14 @@ Isso copia apenas os arquivos versionados para `public_html`. O `.git` fica em
 
 ### 5.3 Configuração privada
 
-```bash
-cd "$SITE_ROOT"
-
-cp config/db.example.php config/db.php
-nano config/db.php
-```
-
-Preencha host, porta, banco, usuário e senha do banco do site/blog.
-
 Crie as chaves (não substitua chaves existentes):
 
 ```bash
+cd "$SITE_ROOT"
+
 [ -s config/app.key ] || openssl rand -base64 48 > config/app.key
 [ -s config/bootstrap.key ] || openssl rand -hex 32 > config/bootstrap.key
-chmod 600 config/app.key config/bootstrap.key config/db.php
+chmod 600 config/app.key config/bootstrap.key
 ```
 
 Crie os diretórios de runtime:
@@ -237,12 +230,21 @@ Não use `777`.
 
 ### 5.4 Banco do site
 
+O caminho recomendado é abrir `https://qeai.com.br/workspace/` após o deploy.
+O painel mostra **Conecte o banco do site**, testa a conexão, grava
+`config/db.php` com permissão `600` e importa `app/blog_install.sql` sem
+conteúdo de exemplo. Informe host, porta, banco, usuário, senha e a chave de
+`config/bootstrap.key`.
+
+Alternativa manual via SSH:
+
 ```bash
+cd "$SITE_ROOT"
+cp config/db.example.php config/db.php
+nano config/db.php
+chmod 600 config/db.php
 mysql -h DB_HOST -u DB_USER -p DB_NAME < app/blog_install.sql
 ```
-
-Se `mysql` não estiver disponível, importe `app/blog_install.sql` pelo
-phpMyAdmin do hPanel.
 
 ### 5.5 URL canônica do site
 

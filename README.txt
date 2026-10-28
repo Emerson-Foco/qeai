@@ -12,6 +12,10 @@ Padrão visual e segurança: private-docs/UI-STANDARDS.md
 Prévia local: http://localhost/qeai/
 Painel local: http://localhost/qeai/workspace/
 
+O banco do blog é configurado na primeira tela do painel, como um instalador:
+informe host, banco, usuário e senha; o schema é importado sem conteúdo de
+exemplo.
+
 URLs públicas: /, /termos, /privacidade e /cookies. Os endereços antigos com .php
 são redirecionados permanentemente para as URLs limpas pelo arquivo .htaccess.
 

@@ -66,9 +66,21 @@ As URLs antigas `/index.php`, `/terms.php`, `/privacy.php`, `/cookies.php` e `/w
 
 ## Primeiro acesso ao painel
 
-O painel usa o banco MySQL do site (o mesmo do blog). Crie `config/db.php` antes do primeiro acesso (veja "Configurar o blog").
+Abra `https://qeai.com.br/workspace/` (ou o domínio canônico configurado).
 
-Abra `https://qeai.com.br/workspace/` (ou o domínio canônico configurado). Se ainda não existir usuário, informe a chave de `config/bootstrap.key` e crie o **ADM** com nome, **e-mail** e senha (mínimo de 10 caracteres). A chave de instalação não é usada no login normal.
+Se `config/db.php` não existir ou a conexão falhar, o painel mostra a tela
+**Conecte o banco do site**. Informe host, porta, nome do banco, usuário e senha
+do MySQL criado no hPanel, além da chave de `config/bootstrap.key`. O painel:
+
+1. testa a conexão;
+2. grava `config/db.php` com permissão `600`;
+3. importa `app/blog_install.sql`, sem posts, categorias ou tags de exemplo.
+
+Depois disso, crie o **ADM** com nome, **e-mail** e senha (mínimo de 10
+caracteres). A chave de instalação não é usada no login normal.
+
+A conexão manual por SSH continua disponível como alternativa na seção
+"Configurar o blog".
 
 Depois de entrar, em **Usuários e grupos**, o ADM adiciona pessoas e define os **grupos de acesso** (ADM, Desenvolvedor, Escritor, Convidado), podendo personalizar as permissões de cada grupo. O padrão é **convidar por link** (a pessoa define a própria senha); também é possível definir uma senha provisória, que deve ser trocada no primeiro acesso.
 
@@ -91,7 +103,9 @@ Salve e use **Enviar e-mail de verificação**. O SMTP real precisa ser validado
 
 ## Configurar o blog
 
-O blog do site usa um banco MySQL próprio (separado do Q One).
+O blog do site usa um banco MySQL próprio (separado do Q One). O caminho
+recomendado é a tela de banco do `/workspace/`; os passos abaixo são a
+alternativa manual via SSH.
 
 1. No hPanel, crie um banco MySQL e um usuário com acesso total a ele. Anote host, nome, usuário e senha.
 2. Crie `config/db.php` no servidor usando `config/db.example.php` como modelo (host, porta, database, username, password). Mantenha fora do Git e com permissão restrita.

@@ -27,6 +27,11 @@ Landing page PHP para hospedagem compartilhada, sem banco de dados obrigatório.
 
 O blog usa um banco MySQL próprio (`config/db.php`, privado e fora do Git). O corpo dos posts é Markdown, renderizado com Parsedown (safe mode) e cacheado em `storage/blog-cache/`. As consultas usam PDO com prepared statements.
 
+O painel `/workspace/` tem uma etapa de conexão do banco quando `config/db.php`
+não existe ou não responde. Ela valida a conexão, grava o arquivo com permissão
+`600` e importa `app/blog_install.sql` de forma idempotente, sem conteúdo de
+exemplo.
+
 ## Deploy
 
 O código é publicado por Git + SSH na branch `main`. O repositório fica fora de
